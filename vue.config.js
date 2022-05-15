@@ -8,4 +8,11 @@ module.exports = {
 	chainWebpack: config => {
 		config.resolve.alias.set('@', resolve('src'))
 	},
+	devServer: {
+		// development server port 8080
+		port: 8080,
+		proxy: {
+			'/api': { target: 'http://easybuy.free.svipss.top', changeOrigin: true },
+		},
+	},
 }

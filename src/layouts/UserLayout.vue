@@ -4,7 +4,7 @@
 			<div class="user-layout-content">
 				<div class="header">
 					<img src="@/assets/logo.svg" class="logo" alt="logo">
-					<span class="title">容易购后台管理系统</span>
+					<span class="title">易买超市后台管理系统</span>
 				</div>
 				<router-view />
 				<div class="footer">
@@ -14,7 +14,7 @@
 						<a>条款</a>
 					</div>
 					<div class="copyright">
-						Copyright &copy; 2022 容易购平台
+						Copyright &copy; 2022 易买超市平台
 					</div>
 				</div>
 			</div>
@@ -47,7 +47,7 @@
 .logo {
 	height: 44px;
 	vertical-align: top;
-	margin-right: 16px;
+	margin-right: 7px;
 	border-style: none;
 }
 .title {
@@ -63,7 +63,7 @@
 	// position: absolute;
 	width: 100%;
 	bottom: 0;
-	padding: 0 16px;
+	// padding: 0 16px;
 	margin: 48px 0 24px;
 	text-align: center;
 

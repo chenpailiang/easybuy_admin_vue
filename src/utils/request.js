@@ -3,7 +3,7 @@ import storage from 'store'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 
 const request = axios.create({
-	baseURL: 'http://localhost:3000',
+	baseURL: '/',
 	timeout: 20 * 1000,
 	maxBodyLength: 5 * 1024 * 1024,
 	withCredentials: true,
@@ -16,6 +16,13 @@ request.interceptors.request.use(
 		}
 	},
 	err => Promise.reject(error)
+)
+// 添加响应拦截器
+request.interceptors.response.use(
+	response => {
+		return response
+	},
+	error => Promise.reject(error)
 )
 const http = {
 	get(url, params) {

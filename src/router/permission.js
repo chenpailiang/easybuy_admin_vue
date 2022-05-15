@@ -14,12 +14,12 @@ export const setupBeforeEach = router => {
 		NProgress.start() // start progress bar
 
 		if (storage.get(ACCESS_TOKEN)) {
+			next()
 		} else {
 			if (whiteList.includes(to.name)) {
 				// 在免登录白名单，直接进入
 				next()
 			} else {
-				console.log(to)
 				next({ path: '/user/login', query: { redirect: to.fullPath } })
 				NProgress.done() // if current page is login will not trigger afterEach hook, so manually handle it
 			}
