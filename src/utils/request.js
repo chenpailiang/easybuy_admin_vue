@@ -1,6 +1,10 @@
 import axios from 'axios'
 import storage from 'store'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
+import tokenServer from './refreshToken'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 
 const request = axios.create({
 	baseURL: '/',
@@ -12,17 +16,35 @@ request.interceptors.request.use(
 	config => {
 		let token = storage.get(ACCESS_TOKEN)
 		if (token) {
-			config.headers['ACCESS_TOKEN'] = token
+			config.headers['Authorization'] = token
 		}
 	},
 	err => Promise.reject(error)
 )
 // 添加响应拦截器
 request.interceptors.response.use(
-	response => {
-		return response
+	async res => {
+		if (res.statuscode == 200) return Promise.resolve(res)
+		else if (res.statuscode == 401) {
+			await tokenServer.apiRefreshToken()
+			return Promise.resolve(request(res.config))
+		} else {
+			let router = useRouter()
+			let store = useStore()
+			ElMessageBox.alert('登录已失效，请重新登录！', '提示', {
+				confirmButtonText: '去登录',
+				callback: () => {
+					store.dispatch('user/LoginOut')
+					router.push('user/login')
+				},
+			})
+			return Promise.reject()
+		}
 	},
-	error => Promise.reject(error)
+	error => {
+		ElMessage.error('服务器链接失败，请重试！')
+		Promise.reject(error)
+	}
 )
 const http = {
 	get(url, params) {

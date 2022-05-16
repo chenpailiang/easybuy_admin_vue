@@ -22,7 +22,7 @@ const user = {
 			return new Promise((resolve, reject) => {
 				login(userInfo)
 					.then(res => {
-						storage.set(ACCESS_TOKEN, res.data.token, 24 * 60 * 60 * 1000)
+						storage.set(ACCESS_TOKEN, res.data.token)
 						commit('SET_TOKEN', res.data.token)
 						resolve(res)
 					})
