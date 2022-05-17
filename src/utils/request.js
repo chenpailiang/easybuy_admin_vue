@@ -24,7 +24,7 @@ request.interceptors.request.use(
 // 添加响应拦截器
 request.interceptors.response.use(
 	async res => {
-		if (res.statuscode == 200) return Promise.resolve(res)
+		if (res.statuscode == 200) return Promise.resolve(res.data)
 		else if (res.statuscode == 401) {
 			await tokenServer.apiRefreshToken()
 			return Promise.resolve(request(res.config))
