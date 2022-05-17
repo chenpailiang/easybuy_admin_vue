@@ -8,11 +8,11 @@ export const asyncRouterMap = [
 		path:'/',
 		component:()=>import('@/layouts/BasicLayout'),
 		name: 'index',
-		children:[
-			{
+		// children:[
+		// 	{
 
-			}
-		]
+		// 	}
+		// ]
 	}
 ]
 
