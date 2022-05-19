@@ -11,6 +11,11 @@ const request = axios.create({
 	timeout: 20 * 1000,
 	maxBodyLength: 5 * 1024 * 1024,
 	withCredentials: true,
+	headers: {
+		'post': {
+			'Content-Type': 'application/json;charset=UTF-8'
+		}
+	  }
 })
 request.interceptors.request.use(
 	config => {
@@ -18,14 +23,15 @@ request.interceptors.request.use(
 		if (token) {
 			config.headers['Authorization'] = token
 		}
+		return config
 	},
 	err => Promise.reject(error)
 )
 // 添加响应拦截器
 request.interceptors.response.use(
 	async res => {
-		if (res.statuscode == 200) return Promise.resolve(res.data)
-		else if (res.statuscode == 401) {
+		if (res.status == 200) return Promise.resolve(res.data)
+		else if (res.status == 401) {
 			await tokenServer.apiRefreshToken()
 			return Promise.resolve(request(res.config))
 		} else {

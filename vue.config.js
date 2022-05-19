@@ -12,7 +12,14 @@ module.exports = {
 		// development server port 8080
 		port: 8080,
 		proxy: {
-			'/api': { target: 'http://easybuy.free.svipss.top', changeOrigin: true },
+			'/api': {
+				target: 'http://easybusy.free.svipss.top',
+				changeOrigin: true,
+				pathRewrite: {
+					'^/api': '',
+				},
+				logLevel: 'debug'
+			},
 		},
 	},
 }

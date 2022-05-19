@@ -22,8 +22,8 @@ const user = {
 			return new Promise((resolve, reject) => {
 				login(userInfo)
 					.then(res => {
-						storage.set(ACCESS_TOKEN, res.data.token)
-						commit('SET_TOKEN', res.data.token)
+						storage.set(ACCESS_TOKEN, res.token)
+						commit('SET_TOKEN', res.token)
 						resolve(res)
 					})
 					.catch(err => reject(err))
