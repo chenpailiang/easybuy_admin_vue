@@ -13,12 +13,11 @@ module.exports = {
 		port: 8080,
 		proxy: {
 			'/api': {
-				target: 'http://easybusy.free.svipss.top',
+				target: 'http://easyadmin.free.svipss.top',
 				changeOrigin: true,
 				pathRewrite: {
 					'^/api': '',
-				},
-				logLevel: 'debug'
+				}
 			},
 		},
 	},
