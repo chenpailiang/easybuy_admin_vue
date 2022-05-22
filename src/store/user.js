@@ -23,6 +23,7 @@ const user = {
 				login(userInfo)
 					.then(res => {
 						storage.set(ACCESS_TOKEN, res.token)
+						storage.set('refresh',res.refresh)
 						commit('SET_TOKEN', res.token)
 						resolve(res)
 					})
@@ -36,6 +37,7 @@ const user = {
 			commit('SET_USERINFO', {})
 			commit('SET_TOKEN', '')
 			storage.remove(ACCESS_TOKEN)
+			storage.remove('refresh')
 		},
 	},
 }

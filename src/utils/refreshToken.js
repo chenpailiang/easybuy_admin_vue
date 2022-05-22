@@ -8,11 +8,14 @@ class RefreshToken {
 	}
 	apiRefreshToken() {
 		if (!this.refreshPromise) {
-			let token
-			refreshToken().then(res => {
-				token = res.data.token
+			let token = storage.get(ACCESS_TOKEN)
+			let refresh = storage.get('refresh')
+			refreshToken({ token, refresh }).then(res => {
+				token = res.token
+				refresh = res.refresh
 			})
 			storage.set(ACCESS_TOKEN, token)
+			storage.set('refresh', refresh)
 			this.refreshPromise = new Promise((resolve, reject) => {
 				setTimeout(() => {
 					this.refreshPromise = undefined

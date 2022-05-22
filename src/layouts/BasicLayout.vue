@@ -1,6 +1,8 @@
 <template>
 	<article class="screen">
-		<aside>1</aside>
+		<aside>
+			<Aside />
+		</aside>
 		<main>
 			<Header />
 			<div class="content">
@@ -15,7 +17,8 @@
 </template>
 
 <script setup>
-import Header from '@/components/layout/header/Header.vue'
+import Header from '@/components/layout/header/Header'
+import Aside from '@/components/layout/aside/Aside'
 </script>
 
 <style scoped>
@@ -27,9 +30,13 @@ import Header from '@/components/layout/header/Header.vue'
 	align-items: stretch;
 }
 aside {
-	width: 15.5rem;
-	min-width: 15.5rem;
-	background-color: rgb(249 250 251);
+	width: 18.26rem;
+	min-width: 18.26rem;
+	z-index: 10;
+	background: #001529;
+	min-height: 100vh;
+    -webkit-box-shadow: 2px 0 6px rgb(0 21 41 / 35%);
+    box-shadow: 2px 0 6px rgb(0 21 41 / 35%);
 }
 main {
 	display: flex;
@@ -42,5 +49,6 @@ main {
 	flex: 1 1 0%;
 	overflow: hidden;
 	padding-left: 1.25rem;
+	background-color: rgb(249 250 251);
 }
 </style>
