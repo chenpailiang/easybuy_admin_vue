@@ -1,6 +1,15 @@
+import BasicLayout from '@/layouts/BasicLayout'
+import { dynamicRouters } from './dynamicRouters'
+
 const RouteView = {
 	name: 'RouteView',
-	render: h => h('router-view')
+	render: h => h('router-view'),
+}
+// 前端路由表
+const constantRouterComponents = {
+	BasicLayout,
+	RouteView,
+	...dynamicRouters
 }
 // 根级菜单
 const rootRouter = {
@@ -8,42 +17,38 @@ const rootRouter = {
 	name: 'index',
 	path: '',
 	component: 'BasicLayout',
-	redirect: '/index',
+	redirect: '/system/user',
 	meta: {
-		title: '首页',
+		title: '易买超市后台管理系统',
 	},
 	children: [],
+}
+// 前端未找到页面路由（固定不用改）
+const notFoundRouter = {
+	path: '*',
+	redirect: '/404',
+	hidden: true,
 }
 
 /**
  * 动态生成菜单
- * @param token
+ * @param navs
  * @returns {Promise<Router>}
  */
-export const generatorDynamicRouter = token => {
-	return new Promise((resolve, reject) => {
-		loginService
-			.getCurrentUserNav(token)
-			.then(res => {
-				console.log('generatorDynamicRouter response:', res)
-				const { result } = res
-				const menuNav = []
-				const childrenNav = []
-				//      后端数据, 根级树数组,  根级 PID
-				listToTree(result, childrenNav, 0)
-				console.log('child', childrenNav)
-				rootRouter.children = childrenNav
-				menuNav.push(rootRouter)
-				console.log('menuNav', menuNav)
-				const routers = generator(menuNav)
-				routers.push(notFoundRouter)
-				console.log('routers', routers)
-				resolve(routers)
-			})
-			.catch(err => {
-				reject(err)
-			})
-	})
+export const generatorDynamicRouter = navs => {
+	const menuNav = []
+	const childrenNav = []
+	// 后端数据, 根级树数组,  根级 PID
+	listToTree(navs, childrenNav, 0)
+	// console.log('child', childrenNav)
+	rootRouter.redirect = childrenNav[0].redirect
+	rootRouter.children = childrenNav
+	menuNav.push(rootRouter)
+	// console.log('menuNav', menuNav)
+	const routers = generator(menuNav)
+	routers.push(notFoundRouter)
+	// console.log('routers', routers)
+	return routers
 }
 
 /**
@@ -72,9 +77,6 @@ export const generator = (routerMap, parent) => {
 			meta: {
 				title: title,
 				icon: icon || undefined,
-				hiddenHeaderContent: hiddenHeaderContent,
-				target: target,
-				permission: item.name,
 			},
 		}
 		// 是否设置了隐藏菜单

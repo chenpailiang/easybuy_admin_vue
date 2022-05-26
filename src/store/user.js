@@ -1,4 +1,4 @@
-import { login, loginout } from '@/api/login'
+import { login, loginout, getInfo } from '@/api/login'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 import storage from 'store'
 
@@ -23,7 +23,7 @@ const user = {
 				login(userInfo)
 					.then(res => {
 						storage.set(ACCESS_TOKEN, res.token)
-						storage.set('refresh',res.refresh)
+						storage.set('refresh', res.refresh)
 						commit('SET_TOKEN', res.token)
 						resolve(res)
 					})
@@ -31,7 +31,16 @@ const user = {
 			})
 		},
 		// 获取用户信息
-		GetInfo() {},
+		GetInfo({ commit }) {
+			return new Promise((resolve, reject) => {
+				getInfo()
+					.then(res => {
+						commit('SET_USERINFO', res.data)
+						resolve(res)
+					})
+					.catch(err => reject(err))
+			})
+		},
 		//登出
 		LoginOut({ commit }) {
 			commit('SET_USERINFO', {})

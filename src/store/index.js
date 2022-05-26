@@ -1,14 +1,13 @@
 import { createStore } from 'vuex'
 import user from './user'
+import permission from './async-router'
 
 export default createStore({
-  state: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
-  modules: {
-    user
-  }
+	state: {},
+	mutations: {},
+	actions: {},
+	modules: {
+		user,
+		permission,
+	},
 })
