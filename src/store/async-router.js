@@ -17,15 +17,18 @@ const permission = {
 		},
 	},
   actions: {
-		GenerateRoutes({ commit }, data) {
+		GenerateRoutes({ commit, state }, navs) {
 			return new Promise(resolve => {
-				const { navs } = data
 				const routers = generatorDynamicRouter(navs)
 				commit('SET_ROUTERS', routers)
+				console.log(state.addRouters)
 				resolve()
 			})
 		},
 	},
+	getters: {
+		addRouters: state => state.addRouters
+	}
 }
 
 export default permission

@@ -76,6 +76,7 @@ export const navs = [
 			title: '角色管理',
 			show: true,
 		},
+		component: 'RolesManage',
 		path: '/system/roles',
 	},
 	{
@@ -98,6 +99,7 @@ export const navs = [
 			title: '商品管理',
 			show: false,
 		},
+		component: 'GoodsManage',
 		path: '/goods/goodsManage'
 	},
 ]

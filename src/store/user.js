@@ -1,6 +1,8 @@
 import { login, loginout, getInfo } from '@/api/login'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 import storage from 'store'
+import router from '@/router'
+import { createRouter } from 'vue-router'
 
 const user = {
 	namespaced: true,
@@ -45,6 +47,9 @@ const user = {
 		LoginOut({ commit }) {
 			commit('SET_USERINFO', {})
 			commit('SET_TOKEN', '')
+			const options = router.options
+			const _VueRouter = createRouter(options)
+			router.matcher = _VueRouter.matcher
 			storage.remove(ACCESS_TOKEN)
 			storage.remove('refresh')
 		},

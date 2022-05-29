@@ -1,14 +1,9 @@
-import BasicLayout from '@/layouts/BasicLayout'
 import { dynamicRouters } from './dynamicRouters'
 
-const RouteView = {
-	name: 'RouteView',
-	render: h => h('router-view'),
-}
 // 前端路由表
 const constantRouterComponents = {
-	BasicLayout,
-	RouteView,
+	BasicLayout: () => import('@/layouts/BasicLayout'),
+	RouteView: () => import('@/layouts/RouteView'),
 	...dynamicRouters
 }
 // 根级菜单
@@ -25,7 +20,7 @@ const rootRouter = {
 }
 // 前端未找到页面路由（固定不用改）
 const notFoundRouter = {
-	path: '*',
+	path: '/:catchAll(.*)',
 	redirect: '/404',
 	hidden: true,
 }
@@ -40,14 +35,11 @@ export const generatorDynamicRouter = navs => {
 	const childrenNav = []
 	// 后端数据, 根级树数组,  根级 PID
 	listToTree(navs, childrenNav, 0)
-	// console.log('child', childrenNav)
 	rootRouter.redirect = childrenNav[0].redirect
 	rootRouter.children = childrenNav
 	menuNav.push(rootRouter)
-	// console.log('menuNav', menuNav)
 	const routers = generator(menuNav)
 	routers.push(notFoundRouter)
-	// console.log('routers', routers)
 	return routers
 }
 
