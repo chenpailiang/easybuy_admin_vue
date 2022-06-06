@@ -23,6 +23,7 @@ request.interceptors.request.use(
 		if (token) {
 			config.headers['Authorization'] = token
 		}
+		config.headers['aid'] = 140
 		return config
 	},
 	err => Promise.reject(error)

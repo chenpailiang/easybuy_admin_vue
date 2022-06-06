@@ -14,7 +14,7 @@
     "nprogress": "^0.2.0",
     "store": "^2.0.12",
     "vue": "^3.0.0",
-    "vue-router": "^4.0.0-0",
+    "vue-router": "^4.0.15",
     "vuex": "^4.0.0-0"
   },
   "devDependencies": {

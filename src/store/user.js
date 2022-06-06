@@ -1,4 +1,4 @@
-import { login, loginout, getInfo } from '@/api/login'
+import { login, getInfo } from '@/api/login'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 import storage from 'store'
 import router from '@/router'

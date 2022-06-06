@@ -1,18 +1,44 @@
-const RouteView = {
-	name: 'RouteView',
-	render: h => h('router-view'),
-}
-
 export const asyncRouterMap = [
 	{
 		path: '/',
 		component: () => import('@/layouts/BasicLayout'),
-		name: 'index',
-		// children:[
-		// 	{
-
-		// 	}
-		// ]
+		redirect: '/index/index',
+		children: [
+			{
+				path: '/index/index',
+				component: () => import('@/views/index/Index'),
+			},
+			{
+				path: '/system',
+				redirect: '/system/user',
+				component: () => import('@/layouts/RouteView'),
+				children: [
+					{
+						path: 'user',
+						component: () => import('@/views/system/UserManage'),
+					},
+					{
+						path: 'menu',
+						component: () => import('@/views/system/MenuManage'),
+					},
+					{
+						path: 'roles',
+						component: () => import('@/views/system/RolesManage'),
+					},
+				],
+			},
+			{
+				path: '/goods',
+				component: () => import('@/layouts/RouteView'),
+				redirect: '/goods/goodsManage',
+				children: [
+					{
+						path: 'goodsManage',
+						component: () => import('@/views/goods/GoodsManage'),
+					},
+				],
+			},
+		],
 	},
 ]
 
@@ -86,7 +112,7 @@ export const navs = [
 		meta: {
 			icon: 'Menu',
 			title: '商品管理',
-			hideChildren: true
+			hideChildren: true,
 		},
 		redirect: '/goods/goodsManage',
 		component: 'RouteView',
@@ -100,6 +126,6 @@ export const navs = [
 			show: false,
 		},
 		component: 'GoodsManage',
-		path: '/goods/goodsManage'
+		path: '/goods/goodsManage',
 	},
 ]

@@ -7,5 +7,5 @@ export function refreshToken(data) {
 	return http.post('/api/auth/refresh', data)
 }
 export function getInfo(data) {
-	return http.get('', data)
+	return http.get('/api/menu/admin', data)
 }
