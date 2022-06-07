@@ -1,6 +1,5 @@
 <template>
 	<el-menu default-active="2" background-color="#001529" text-color="#fff">
-		<template v-for="(v, i) in menus[0].children" :key="i">
 			<el-sub-menu index="1">
 				<template #title>
 					<Icon Icon="Setting" />
@@ -14,7 +13,6 @@
 				<Icon Icon="Menu" />
 				<span>商品管理</span>
 			</el-menu-item>
-		</template>
 	</el-menu>
 </template>
 

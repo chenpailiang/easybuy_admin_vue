@@ -6,6 +6,7 @@ export function login(data) {
 export function refreshToken(data) {
 	return http.post('/api/auth/refresh', data)
 }
+// 获取菜单
 export function getInfo(data) {
-	return http.get('/api/menu/admin', data)
+	return http.get('/api/api/menu', data)
 }

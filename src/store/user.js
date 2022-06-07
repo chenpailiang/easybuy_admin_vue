@@ -37,6 +37,7 @@ const user = {
 			return new Promise((resolve, reject) => {
 				getInfo()
 					.then(res => {
+						console.log(res)
 						commit('SET_USERINFO', res.data)
 						resolve(res)
 					})
