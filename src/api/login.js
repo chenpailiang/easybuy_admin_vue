@@ -8,5 +8,5 @@ export function refreshToken(data) {
 }
 // 获取菜单
 export function getInfo(data) {
-	return http.get('/api/api/menu', data)
+	return http.get('/api/menu', data, 140)
 }

@@ -15,22 +15,7 @@ export const setupBeforeEach = router => {
 		NProgress.start() // start progress bar
 		if (storage.get(ACCESS_TOKEN)) {
 			if (JSON.stringify(store.state.user.userInfo) == '{}') {
-				store.dispatch('user/GetInfo').then(res=>{
-					console.log(res)
-				})
-				// store.dispatch('permission/GenerateRoutes', navs).then(_ => {
-				// 	let routers = store.getters['permission/addRouters']
-				// 	routers.forEach(r => router.addRoute(r))
-				// })
-				// 请求带有 redirect 重定向时，登录自动重定向到该地址
-				// const redirect = decodeURIComponent(from.query.redirect || to.path)
-				// console.log(redirect)
-				// if (to.path === redirect) {
-				// 	next({ ...to, replace: true })
-				// } else {
-				// 	// 跳转到目的路由
-				// 	next({ path: redirect })
-				// }
+				store.dispatch('user/GetInfo')
 				next()
 			} else next()
 		} else {

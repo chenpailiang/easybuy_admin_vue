@@ -37,8 +37,7 @@ const user = {
 			return new Promise((resolve, reject) => {
 				getInfo()
 					.then(res => {
-						console.log(res)
-						commit('SET_USERINFO', res.data)
+						commit('SET_USERINFO', res)
 						resolve(res)
 					})
 					.catch(err => reject(err))
@@ -54,6 +53,9 @@ const user = {
 			storage.remove(ACCESS_TOKEN)
 			storage.remove('refresh')
 		},
+	},
+	getters: {
+		userInfo: state => state.userInfo,
 	},
 }
 export default user

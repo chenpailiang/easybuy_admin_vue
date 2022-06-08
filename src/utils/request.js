@@ -12,18 +12,17 @@ const request = axios.create({
 	maxBodyLength: 5 * 1024 * 1024,
 	withCredentials: true,
 	headers: {
-		'post': {
-			'Content-Type': 'application/json;charset=UTF-8'
-		}
-	  }
+		post: {
+			'Content-Type': 'application/json;charset=UTF-8',
+		},
+	},
 })
 request.interceptors.request.use(
 	config => {
 		let token = storage.get(ACCESS_TOKEN)
 		if (token) {
-			config.headers['Authorization'] = token
+			config.headers['Authorization'] = `Bearer ${token}`
 		}
-		config.headers['aid'] = 140
 		return config
 	},
 	err => Promise.reject(error)
@@ -54,10 +53,10 @@ request.interceptors.response.use(
 	}
 )
 const http = {
-	get(url, params) {
+	get(url, params, aid) {
 		return new Promise((resolve, reject) => {
 			request
-				.get(url, { params })
+				.get(url, { params, headers: { aid } })
 				.then(res => resolve(res))
 				.catch(err => reject(err))
 		})
