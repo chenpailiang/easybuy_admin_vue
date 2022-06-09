@@ -3,7 +3,6 @@ import 'nprogress/nprogress.css'
 import storage from 'store'
 import store from '@/store'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
-import { navs } from '@/config/router.config'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
