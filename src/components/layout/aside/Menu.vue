@@ -2,12 +2,13 @@
 	<el-menu background-color="#001529" text-color="#fff" router>
 		<template v-for="v in menus" :key="v.id">
 			<template v-if="v.children">
-				<el-sub-menu>
+				<el-sub-menu :index="`/${v.name}`">
 					<template #title>
 						<Icon :Icon="v.icon" />
 						<span>{{ v.title }}</span>
 					</template>
-					<el-menu-item v-for="(u, i) in v.children" :key="i" :index="`/${v.name}/${u.name}`">{{ u.title }}</el-menu-item>
+					<el-menu-item v-for="(u, i) in v.children" :key="i" :index="`/${v.name}/${u.name}`">
+						{{ u.title }}</el-menu-item>
 				</el-sub-menu>
 			</template>
 			<template v-else>
@@ -26,13 +27,24 @@ import { ref } from 'vue'
 import { getPermissionsList } from '@/api/login'
 import { listToTree } from '@/utils/util'
 
-let menus = ref([])
-async function get() {
-	let menus = (await getPermissionsList()).menus
-	listToTree(menus, menus.value, 0)
-	console.log(menus.value)
-}
-await get()
+let menus = [
+	{
+		name: 'system',
+		title: '系统管理',
+		icon: 'Setting',
+		children: [
+			{ name: 'menu', title: '菜单管理', icon: null },
+			{ name: 'user', title: '用户管理', icon: null },
+		],
+	},
+]
+// let menus = ref([])
+// async function get() {
+// 	let menus = (await getPermissionsList()).menus
+// 	listToTree(menus, menus.value, 0)
+// 	console.log(menus.value)
+// }
+// await get()
 </script>
 
 <style scoped>
