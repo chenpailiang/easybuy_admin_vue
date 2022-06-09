@@ -1,27 +1,21 @@
-import NProgress from 'nprogress' // progress bar
+import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import storage from 'store'
 import store from '@/store'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 
-NProgress.configure({ showSpinner: false }) // NProgress Configuration
+NProgress.configure({ showSpinner: false })
 
-const defaultRoutePath = '/dashboard/workplace'
-const whiteList = ['login', 'register', 'registerResult'] // 不进行拦截的路由名称集合
+const defaultRoutePath = '/index/index'
+const whiteList = ['login', 'register', 'registerResult']
 
 export const setupBeforeEach = router => {
 	router.beforeEach((to, from, next) => {
-		NProgress.start() // start progress bar
-		if (storage.get(ACCESS_TOKEN)) {
-			if (JSON.stringify(store.state.user.userInfo) == '{}') {
-				store.dispatch('user/GetInfo')
-				next()
-			} else next()
-		} else {
-			if (whiteList.includes(to.name)) {
-				// 在免登录白名单，直接进入
-				next()
-			} else {
+		NProgress.start()
+		if (storage.get(ACCESS_TOKEN)) next()
+		else {
+			if (whiteList.includes(to.name)) next()
+			else {
 				next({ path: '/user/login', query: { redirect: to.fullPath } })
 				NProgress.done()
 			}

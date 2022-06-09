@@ -1,51 +1,38 @@
 <template>
-	<el-menu default-active="2" background-color="#001529" text-color="#fff">
-		<el-sub-menu index="1">
-			<template #title>
-				<Icon Icon="Setting" />
-				<span>系统管理</span>
+	<el-menu background-color="#001529" text-color="#fff" router>
+		<template v-for="v in menus" :key="v.id">
+			<template v-if="v.children">
+				<el-sub-menu>
+					<template #title>
+						<Icon :Icon="v.icon" />
+						<span>{{ v.title }}</span>
+					</template>
+					<el-menu-item v-for="(u, i) in v.children" :key="i" :index="`/${v.name}/${u.name}`">{{ u.title }}</el-menu-item>
+				</el-sub-menu>
 			</template>
-			<el-menu-item index="1-1">用户管理</el-menu-item>
-			<el-menu-item index="1-2">菜单管理</el-menu-item>
-			<el-menu-item index="1-3">角色管理</el-menu-item>
-		</el-sub-menu>
-		<el-menu-item index="2">
-			<Icon Icon="Menu" />
-			<span>商品管理</span>
-		</el-menu-item>
+			<template v-else>
+				<el-menu-item :index="`/${v.name}`">
+					<Icon :Icon="v.icon" />
+					<span>{{ v.title }}</span>
+				</el-menu-item>
+			</template>
+		</template>
 	</el-menu>
 </template>
 
 <script setup>
 import Icon from '@/components/common/Icon'
-import { computed, ref } from 'vue'
-import { useStore } from 'vuex'
+import { ref } from 'vue'
+import { getPermissionsList } from '@/api/login'
+import { listToTree } from '@/utils/util'
 
-let store = useStore()
-let menus = computed(_ => store.getters['user/userInfo'].menus)
-let menuList = ref([])
-console.log(menus.value.forEach(v=>console.log(v)))
-let listToTree = (list, tree, parentId) => {
-	list.forEach(item => {
-		// 判断是否为父级菜单
-		if (item.parentId === parentId) {
-			const child = {
-				...item,
-				key: item.key || item.name,
-				children: [],
-			}
-			// 迭代 list， 找到当前菜单相符合的所有子菜单
-			listToTree(list, child.children, item.id)
-			// 删掉不存在 children 值的属性
-			if (child.children.length <= 0) {
-				delete child.children
-			}
-			// 加入到树中
-			tree.push(child)
-		}
-	})
+let menus = ref([])
+async function get() {
+	let menus = (await getPermissionsList()).menus
+	listToTree(menus, menus.value, 0)
+	console.log(menus.value)
 }
-// listToTree(menus,menuList.value,0)
+await get()
 </script>
 
 <style scoped>
