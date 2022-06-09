@@ -11,7 +11,6 @@ export const asyncRouterMap = [
 			{
 				path: '/system',
 				redirect: '/system/user',
-				component: () => import('@/layouts/RouteView'),
 				children: [
 					{
 						path: 'user',
@@ -29,7 +28,6 @@ export const asyncRouterMap = [
 			},
 			{
 				path: '/goods',
-				component: () => import('@/layouts/RouteView'),
 				redirect: '/goods/goodsManage',
 				children: [
 					{
