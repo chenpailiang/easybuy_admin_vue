@@ -6,24 +6,16 @@ class RefreshToken {
 	constructor() {
 		this.refreshPromise = undefined
 	}
-	apiRefreshToken() {
-		if (!this.refreshPromise) {
+	async apiRefreshToken() {
 			let token = storage.get(ACCESS_TOKEN)
 			let refresh = storage.get('refresh')
-			refreshToken({ token, refresh }).then(res => {
-				token = res.token
-				refresh = res.refresh
-			})
+			let res =  await refreshToken({ token, refresh })
+			token = res.token
+			refresh = res.refresh
+			this.refreshPromise = res
 			storage.set(ACCESS_TOKEN, token)
 			storage.set('refresh', refresh)
-			this.refreshPromise = new Promise((resolve, reject) => {
-				setTimeout(() => {
-					this.refreshPromise = undefined
-					resolve()
-				}, 8000)
-			})
-		}
-		return this.refreshPromise
+			return this.refreshPromise
 	}
 }
 

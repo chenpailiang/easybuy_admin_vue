@@ -1,5 +1,5 @@
 <template>
-	<el-menu background-color="#001529" text-color="#fff" router>
+	<el-menu background-color="#001529" :default-active="currentKey" text-color="#fff" router>
 		<template v-for="v in menus" :key="v.id">
 			<template v-if="v.children">
 				<el-sub-menu :index="`/${v.name}`">
@@ -23,28 +23,24 @@
 
 <script setup>
 import Icon from '@/components/common/Icon'
-import { ref } from 'vue'
+import { ref, onMounted, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import { getPermissionsList } from '@/api/login'
 import { listToTree } from '@/utils/util'
 
-let menus = [
-	{
-		name: 'system',
-		title: '系统管理',
-		icon: 'Setting',
-		children: [
-			{ name: 'menu', title: '菜单管理', icon: null },
-			{ name: 'user', title: '用户管理', icon: null },
-		],
-	},
-]
-// let menus = ref([])
-// async function get() {
-// 	let menus = (await getPermissionsList()).menus
-// 	listToTree(menus, menus.value, 0)
-// 	console.log(menus.value)
-// }
-// await get()
+let route = useRoute()
+let currentKey = ref(route.path)
+watch(
+	_ => route,
+	v => (currentKey.value = v.path)
+)
+
+let menus = ref([])
+async function get() {
+	let menuList = (await getPermissionsList()).menus
+	listToTree(menuList, menus.value, 0)
+}
+onMounted(async _ => await get())
 </script>
 
 <style scoped>

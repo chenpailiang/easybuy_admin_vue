@@ -5,6 +5,7 @@ import tokenServer from './refreshToken'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
+import store from '@/store'
 
 const request = axios.create({
 	baseURL: '/',
@@ -29,27 +30,27 @@ request.interceptors.request.use(
 )
 // 添加响应拦截器
 request.interceptors.response.use(
-	async res => {
-		if (res.status == 200) return Promise.resolve(res.data)
-		else if (res.status == 401) {
-			await tokenServer.apiRefreshToken()
-			return Promise.resolve(request(res.config))
+	res => Promise.resolve(res.data),
+	async error => {
+		if (error.response.status == 401) {
+			let res = await tokenServer.apiRefreshToken()
+			if (res.success) return Promise.resolve(request(error.config))
+			else {
+				let router = useRouter()
+				let store = useStore()
+				ElMessageBox.alert('登录已失效，请重新登录！', '提示', {
+					confirmButtonText: '去登录',
+					callback: () => {
+						store.dispatch('user/LoginOut')
+						router.push('user/login')
+					},
+				})
+				return Promise.reject()
+			}
 		} else {
-			let router = useRouter()
-			let store = useStore()
-			ElMessageBox.alert('登录已失效，请重新登录！', '提示', {
-				confirmButtonText: '去登录',
-				callback: () => {
-					store.dispatch('user/LoginOut')
-					router.push('user/login')
-				},
-			})
-			return Promise.reject()
+			ElMessage.error('服务器链接失败，请重试！')
+			Promise.reject(error)
 		}
-	},
-	error => {
-		ElMessage.error('服务器链接失败，请重试！')
-		Promise.reject(error)
 	}
 )
 const http = {
@@ -61,10 +62,10 @@ const http = {
 				.catch(err => reject(err))
 		})
 	},
-	post(url, data) {
+	post(url, data, aid) {
 		return new Promise((resolve, reject) => {
 			request
-				.post(url, JSON.stringify(data))
+				.post(url, JSON.stringify(data), { headers: { aid } })
 				.then(res => resolve(res))
 				.catch(err => reject(err))
 		})
