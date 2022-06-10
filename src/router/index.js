@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { constantRouterMap,asyncRouterMap } from '@/config/router.config'
+import { constantRouterMap, asyncRouterMap } from '@/config/router.config'
 import { setupBeforeEach, setupAfterEach } from './permission'
 
 const router = createRouter({
