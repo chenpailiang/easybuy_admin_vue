@@ -13,13 +13,13 @@
 			<Icon Icon="Refresh" :size="20" color="#409eff" @click="refresh" style="cursor: pointer;" />
 		</div>
 
-		<el-table :data="tableData" :header-cell-style="{ background: '#f5f7fa', color:'#000000' }" border>
-			<el-table-column prop="date" label="菜单" width="180" />
-			<el-table-column prop="name" label="菜单编码" width="180" />
-			<el-table-column prop="address" label="图标" />
-			<el-table-column prop="address" label="页面链接" />
-			<el-table-column prop="address" label="功能项" />
-			<el-table-column label="操作" align="center" width="250" class-name="table-op">
+		<el-table :data="menus" row-key="id" :header-cell-style="{ background: '#f5f7fa', color:'#000000' }"
+			border>
+			<el-table-column prop="title" label="菜单" />
+			<el-table-column prop="name" label="菜单编码" />
+			<el-table-column prop="icon" label="图标" />
+			<el-table-column prop="address" label="功能项" width="250" />
+			<el-table-column label="操作" align="center" width="250">
 				<template #default>
 					<el-button type="primary" text size="small">+子菜单</el-button>
 					<el-button type="primary" text size="small">+功能</el-button>
@@ -35,30 +35,26 @@
 <script setup>
 import Icon from '@/components/common/Icon'
 
-const tableData = [
+const menus = [
 	{
-		date: '2016-05-03',
-		name: 'Tom',
-		address: 'No. 189, Grove St, Los Angeles',
+		id: 1,
+		title: '系统管理',
+		name: 'system',
+		icon: 'Setting',
+		children: [
+			{ id: 3, title: '菜单管理', name: 'menu' },
+			{ id: 4, title: '用户管理', name: 'user' },
+		],
 	},
 	{
-		date: '2016-05-02',
-		name: 'Tom',
-		address: 'No. 189, Grove St, Los Angeles',
-	},
-	{
-		date: '2016-05-04',
-		name: 'Tom',
-		address: 'No. 189, Grove St, Los Angeles',
-	},
-	{
-		date: '2016-05-01',
-		name: 'Tom',
-		address: 'No. 189, Grove St, Los Angeles',
+		id: 2,
+		title: '商品管理',
+		name: 'goods',
+		icon: 'Menu',
 	},
 ]
 
-let refresh = _=> location.reload()
+let refresh = _ => location.reload()
 </script>
 
 <style scoped>

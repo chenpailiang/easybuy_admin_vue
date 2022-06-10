@@ -5,7 +5,7 @@ import tokenServer from './refreshToken'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { useRouter } from 'vue-router'
 import store from '@/store'
-
+import router from '@/router'
 const request = axios.create({
 	baseURL: '/',
 	timeout: 20 * 1000,
@@ -33,7 +33,6 @@ request.interceptors.response.use(
 			let res = await tokenServer.apiRefreshToken()
 			if (res.success) return Promise.resolve(request(error.config))
 			else {
-				let router = useRouter()
 				ElMessageBox.alert('登录已失效，请重新登录！', '提示', {
 					confirmButtonText: '去登录',
 					callback: () => {

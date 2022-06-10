@@ -28,17 +28,17 @@ import { useRoute } from 'vue-router'
 import { getPermissionsList } from '@/api/login'
 import { listToTree } from '@/utils/util'
 
-let menus = [
-	{
-		name: 'system',
-		title: '系统管理',
-		icon: 'Setting',
-		children: [
-			{ name: 'menu', title: '菜单管理', icon: null },
-			{ name: 'user', title: '用户管理', icon: null },
-		],
-	},
-]
+// let menus = [
+// 	{
+// 		name: 'system',
+// 		title: '系统管理',
+// 		icon: 'Setting',
+// 		children: [
+// 			{ name: 'menu', title: '菜单管理', icon: null },
+// 			{ name: 'user', title: '用户管理', icon: null },
+// 		],
+// 	},
+// ]
 let route = useRoute()
 let currentKey = ref(route.path)
 watch(
@@ -46,12 +46,12 @@ watch(
 	v => (currentKey.value = v.path)
 )
 
-// let menus = ref([])
-// async function get() {
-// 	let menuList = (await getPermissionsList()).menus
-// 	listToTree(menuList, menus.value, 0)
-// }
-// onMounted(async _ => await get())
+let menus = ref([])
+async function get() {
+	let menuList = (await getPermissionsList()).menus
+	listToTree(menuList, menus.value, 0)
+}
+onMounted(async _ => await get())
 </script>
 
 <style scoped>
