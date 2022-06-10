@@ -4,7 +4,6 @@ import { ACCESS_TOKEN } from '@/store/mutation-types'
 import tokenServer from './refreshToken'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { useRouter } from 'vue-router'
-import { useStore } from 'vuex'
 import store from '@/store'
 
 const request = axios.create({
@@ -21,9 +20,7 @@ const request = axios.create({
 request.interceptors.request.use(
 	config => {
 		let token = storage.get(ACCESS_TOKEN)
-		if (token) {
-			config.headers['Authorization'] = `Bearer ${token}`
-		}
+		if (token) config.headers['Authorization'] = `Bearer ${token}`	
 		return config
 	},
 	err => Promise.reject(error)
@@ -37,7 +34,6 @@ request.interceptors.response.use(
 			if (res.success) return Promise.resolve(request(error.config))
 			else {
 				let router = useRouter()
-				let store = useStore()
 				ElMessageBox.alert('登录已失效，请重新登录！', '提示', {
 					confirmButtonText: '去登录',
 					callback: () => {

@@ -23,7 +23,5 @@ export const setupBeforeEach = router => {
 	})
 }
 export const setupAfterEach = router => {
-	router.afterEach(() => {
-		NProgress.done()
-	})
+	router.afterEach(() => NProgress.done())
 }
