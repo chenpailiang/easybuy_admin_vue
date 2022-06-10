@@ -13,7 +13,7 @@
 			<Icon Icon="Refresh" :size="20" color="#409eff" />
 		</div>
 
-		<el-table :data="tableData" style="width: 100%" border>
+		<el-table :data="tableData" :header-cell-style="{ background: '#f5f7fa', color:'#000000' }" border>
 			<el-table-column prop="date" label="菜单" width="180" />
 			<el-table-column prop="name" label="菜单编码" width="180" />
 			<el-table-column prop="address" label="图标" />
