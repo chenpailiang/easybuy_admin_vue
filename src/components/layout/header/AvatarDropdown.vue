@@ -39,7 +39,6 @@ let loginOut = _ => {
 	display: flex;
 	align-items: center;
 	gap: 0 0.5rem;
-	padding: 0 0.55rem;
 }
 .el-dropdown-link {
 	cursor: pointer;
