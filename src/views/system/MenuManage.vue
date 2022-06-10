@@ -10,7 +10,7 @@
 
 		<div class="op">
 			<el-button type="primary">新增模块</el-button>
-			<Icon Icon="Refresh" :size="20" color="#409eff" />
+			<Icon Icon="Refresh" :size="20" color="#409eff" @click="refresh" style="cursor: pointer;" />
 		</div>
 
 		<el-table :data="tableData" :header-cell-style="{ background: '#f5f7fa', color:'#000000' }" border>
@@ -57,6 +57,8 @@ const tableData = [
 		address: 'No. 189, Grove St, Los Angeles',
 	},
 ]
+
+let refresh = _=> location.reload()
 </script>
 
 <style scoped>
