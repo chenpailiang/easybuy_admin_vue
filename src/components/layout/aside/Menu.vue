@@ -2,19 +2,19 @@
 	<el-menu background-color="#001529" :default-active="currentKey" text-color="#fff" router>
 		<template v-for="v in menus" :key="v.id">
 			<template v-if="v.children">
-				<el-sub-menu :index="`/${v.name}`">
+				<el-sub-menu :index="`/${v.symbol}`">
 					<template #title>
 						<Icon :Icon="v.icon" />
-						<span>{{ v.title }}</span>
+						<span>{{ v.name }}</span>
 					</template>
-					<el-menu-item v-for="(u, i) in v.children" :key="i" :index="`/${v.name}/${u.name}`">
-						{{ u.title }}</el-menu-item>
+					<el-menu-item v-for="(u, i) in v.children" :key="i" :index="`/${v.symbol}/${u.symbol}`">
+						{{ u.name }}</el-menu-item>
 				</el-sub-menu>
 			</template>
 			<template v-else>
-				<el-menu-item :index="`/${v.name}`">
+				<el-menu-item :index="`/${v.symbol}`">
 					<Icon :Icon="v.icon" />
-					<span>{{ v.title }}</span>
+					<span>{{ v.name }}</span>
 				</el-menu-item>
 			</template>
 		</template>
@@ -30,12 +30,12 @@ import { listToTree } from '@/utils/util'
 
 let menus = [
 	{
-		name: 'system',
-		title: '系统管理',
+		symbol: 'system',
+		name: '系统管理',
 		icon: 'Setting',
 		children: [
-			{ name: 'menu', title: '菜单管理', icon: null },
-			{ name: 'user', title: '用户管理', icon: null },
+			{ symbol: 'menu', name: '菜单管理', icon: null },
+			{ symbol: 'user', name: '用户管理', icon: null },
 		],
 	},
 ]

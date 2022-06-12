@@ -15,11 +15,12 @@
 
 		<el-table :data="menus" row-key="id" :header-cell-style="{ background: '#f5f7fa', color:'#000000' }"
 			border>
-			<el-table-column prop="title" label="菜单" />
-			<el-table-column prop="name" label="菜单编码" />
-			<el-table-column prop="icon" label="图标" />
-			<el-table-column prop="address" label="功能项" width="250" />
-			<el-table-column label="操作" align="center" width="250">
+			<el-table-column prop="name" label="菜单名称" />
+			<el-table-column prop="symbol" label="菜单编码" width="200" />
+			<el-table-column prop="icon" label="图标" width="200" />
+			<el-table-column prop="path" label="页面地址" />
+			<el-table-column prop="funcs" label="功能项" />
+			<el-table-column label="操作" align="center">
 				<template #default>
 					<el-button type="primary" text size="small" @click="show('+子菜单')">+子菜单</el-button>
 					<el-button type="primary" text size="small" @click="showFuc">+功能</el-button>
@@ -57,19 +58,40 @@ import { ref } from 'vue'
 const menus = [
 	{
 		id: 1,
-		title: '系统管理',
-		name: 'system',
+		name: '系统管理',
+		symbol: 'system',
 		icon: 'Setting',
 		children: [
-			{ id: 3, title: '菜单管理', name: 'menu' },
-			{ id: 4, title: '用户管理', name: 'user' },
+			{
+				id: 3,
+				name: '菜单管理',
+				symbol: 'menu',
+				path: '/system/menu',
+				funcs: '查询 新增模块 +子菜单 +功能 编辑 删除',
+			},
+			{
+				id: 4,
+				name: '用户管理',
+				symbol: 'user',
+				path: '/system/user',
+				funcs: '查询 新增 编辑 删除',
+			},
 		],
 	},
 	{
 		id: 2,
-		title: '商品管理',
-		name: 'goods',
+		name: '商品管理',
+		symbol: 'goods',
 		icon: 'Menu',
+	},
+]
+const funcs = [
+	{
+		id: 1,
+		menuId: 1,
+		name: '查询',
+		symbol: 'Search',
+		description: '查询菜单',
 	},
 ]
 let menuInfo = ref({})
