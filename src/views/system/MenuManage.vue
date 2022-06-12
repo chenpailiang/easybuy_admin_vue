@@ -9,7 +9,7 @@
 		</section>
 
 		<div class="op">
-			<el-button type="primary">新增模块</el-button>
+			<el-button type="primary" @click="show('新增模块')">新增模块</el-button>
 			<Icon Icon="Refresh" :size="20" color="#409eff" @click="refresh" style="cursor: pointer;" />
 		</div>
 
@@ -21,20 +21,39 @@
 			<el-table-column prop="address" label="功能项" width="250" />
 			<el-table-column label="操作" align="center" width="250">
 				<template #default>
-					<el-button type="primary" text size="small">+子菜单</el-button>
-					<el-button type="primary" text size="small">+功能</el-button>
-					<el-button type="primary" text size="small">编辑</el-button>
+					<el-button type="primary" text size="small" @click="show('+子菜单')">+子菜单</el-button>
+					<el-button type="primary" text size="small" @click="showFuc">+功能</el-button>
+					<el-button type="primary" text size="small" @click="show('编辑菜单')">编辑</el-button>
 					<el-button type="danger" text size="small">删除</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
 
+		<el-dialog v-model="menuDialog" :title="title" width="30%" @close="close">
+			<MenuInfo :menuInfo="menuInfo" />
+			<template #footer>
+				<el-button @click="close">取消</el-button>
+				<el-button type="primary" @click="sendOk">确定</el-button>
+			</template>
+		</el-dialog>
+
+		<el-dialog v-model="fucDialog" width="30%">
+			<FucInfo :fucInfo="fucInfo" />
+			<template #footer>
+				<el-button @click="fucDialog = false">取消</el-button>
+				<el-button type="primary" @click="send">确定</el-button>
+			</template>
+		</el-dialog>
 	</div>
 </template>
 
 <script setup>
 import Icon from '@/components/common/Icon'
+import MenuInfo from './menu/MenuInfo'
+import FucInfo from './menu/FucInfo'
+import { ref } from 'vue'
 
+// 菜单模块的新增编辑
 const menus = [
 	{
 		id: 1,
@@ -53,6 +72,28 @@ const menus = [
 		icon: 'Menu',
 	},
 ]
+let menuInfo = ref({})
+let menuDialog = ref(false)
+let title = ref('')
+let show = v => {
+	menuDialog.value = true
+	title.value = v
+}
+let close = _ => {
+	menuInfo.value = {}
+	menuDialog.value = false
+}
+let sendOk = _ => {
+	menuDialog.value = false
+}
+
+// 功能新增编辑
+let fucInfo = ref({})
+let fucDialog = ref(false)
+let showFuc = _ => (fucDialog.value = true)
+let send = _ => {
+	fucDialog.value = false
+}
 
 let refresh = _ => location.reload()
 </script>

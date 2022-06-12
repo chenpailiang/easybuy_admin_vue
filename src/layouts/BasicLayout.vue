@@ -28,6 +28,7 @@ import Aside from '@/components/layout/aside/Aside'
 	height: 100vh;
 	overflow: hidden;
 	align-items: stretch;
+	min-width: 1140px;
 }
 aside {
 	width: 18.26rem;
@@ -35,8 +36,8 @@ aside {
 	z-index: 10;
 	background: #001529;
 	min-height: 100vh;
-    -webkit-box-shadow: 2px 0 6px rgb(0 21 41 / 35%);
-    box-shadow: 2px 0 6px rgb(0 21 41 / 35%);
+	-webkit-box-shadow: 2px 0 6px rgb(0 21 41 / 35%);
+	box-shadow: 2px 0 6px rgb(0 21 41 / 35%);
 }
 main {
 	display: flex;

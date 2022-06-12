@@ -12,15 +12,15 @@ const whiteList = ['login', 'register', 'registerResult']
 export const setupBeforeEach = router => {
 	router.beforeEach((to, from, next) => {
 		NProgress.start()
-		// next()
-		if (storage.get(ACCESS_TOKEN)) next()
-		else {
-			if (whiteList.includes(to.name)) next()
-			else {
-				next({ path: '/user/login', query: { redirect: to.fullPath } })
-				NProgress.done()
-			}
-		}
+		next()
+		// if (storage.get(ACCESS_TOKEN)) next()
+		// else {
+		// 	if (whiteList.includes(to.name)) next()
+		// 	else {
+		// 		next({ path: '/user/login', query: { redirect: to.fullPath } })
+		// 		NProgress.done()
+		// 	}
+		// }
 	})
 }
 export const setupAfterEach = router => {
