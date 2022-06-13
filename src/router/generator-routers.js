@@ -129,17 +129,20 @@ export const generatorRouter = (menus, routers) => {
 		v.component = routers['RouteView']
 		v.redirect = `/${v.symbol}/${v.children[0].symbol}`
 		v.path = `/${v.symbol}`
+		v.meta = { menuId: v.id }
 		v.children &&
 			v.children.forEach(u => {
 				u.component = routers[u.symbol]
 				u.path = `${u.symbol}`
+				u.meta = { menuId: u.id }
 			})
 	})
 	const result = menus.map(v => ({
 		path: v.path,
 		component: v.component,
 		redirect: v.redirect,
-		children: v.children.map(u => ({ path: u.path, component: u.component })),
+		meta: v.meta,
+		children: v.children.map(u => ({ path: u.path, component: u.component, meta: u.meta })),
 	}))
 	return result
 }
