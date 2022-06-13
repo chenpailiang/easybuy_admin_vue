@@ -9,7 +9,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/index/Index'),
 			},
 			{
-				path: '/system',
+				path: '/system',                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
 				redirect: '/system/user',
 				component: () => import('@/layouts/RouteView'),
 				children: [

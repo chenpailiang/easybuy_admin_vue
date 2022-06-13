@@ -4,7 +4,7 @@ import { dynamicRouters } from './dynamicRouters'
 const constantRouterComponents = {
 	BasicLayout: () => import('@/layouts/BasicLayout'),
 	RouteView: () => import('@/layouts/RouteView'),
-	...dynamicRouters
+	...dynamicRouters,
 }
 // 根级菜单
 const rootRouter = {
@@ -119,4 +119,27 @@ const listToTree = (list, tree, parentId) => {
 			tree.push(child)
 		}
 	})
+}
+
+/* 
+	生成路由
+*/
+export const generatorRouter = (menus, routers) => {
+	menus.forEach(v => {
+		v.component = routers['RouteView']
+		v.redirect = `/${v.symbol}/${v.children[0].symbol}`
+		v.path = `/${v.symbol}`
+		v.children &&
+			v.children.forEach(u => {
+				u.component = routers[u.symbol]
+				u.path = `${u.symbol}`
+			})
+	})
+	const result = menus.map(v => ({
+		path: v.path,
+		component: v.component,
+		redirect: v.redirect,
+		children: v.children.map(u => ({ path: u.path, component: u.component })),
+	}))
+	return result
 }

@@ -1,6 +1,7 @@
 export const dynamicRouters = {
-	UserManage: _ => import('@/views/system/UserManage'),
-	MenuManage: _ => import('@/views/system/MenuManage'),
-    RolesManage: _=> import('@/views/system/RolesManage'),
-	GoodsManage: _ => import('@/views/goods/GoodsManage')
+	RouteView: _=> import('@/layouts/RouteView'),
+	user: _ => import('@/views/system/UserManage'),
+	menu: _ => import('@/views/system/MenuManage'),
+    role: _=> import('@/views/system/RolesManage'),
+	goods: _ => import('@/views/goods/GoodsManage')
 }
