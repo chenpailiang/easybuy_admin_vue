@@ -13,16 +13,17 @@
 			<Icon Icon="Refresh" :size="20" color="#409eff" @click="refresh" style="cursor: pointer;" />
 		</div>
 
-		<el-table :data="menus" row-key="id" :header-cell-style="{ background: '#f5f7fa', color:'#000000' }"
-			border>
+		<el-table :data="menus" row-key="id"
+			:header-cell-style="{ background: '#f5f7fa', color: '#000000' }" border>
 			<el-table-column prop="name" label="菜单名称" />
 			<el-table-column prop="symbol" label="菜单编码" width="200" />
 			<el-table-column prop="icon" label="图标" width="200" />
 			<el-table-column prop="path" label="页面地址" />
 			<el-table-column prop="funcs" label="功能项" />
 			<el-table-column label="操作" align="center">
-				<template #default>
-					<el-button type="primary" text size="small" @click="show('+子菜单')">+子菜单</el-button>
+				<template #default="{ row: v }">
+					<el-button v-if="v" type="primary" text size="small" @click="show('+子菜单')">+子菜单
+					</el-button>
 					<el-button type="primary" text size="small" @click="showFuc">+功能</el-button>
 					<el-button type="primary" text size="small" @click="show('编辑菜单')">编辑</el-button>
 					<el-button type="danger" text size="small">删除</el-button>
@@ -30,7 +31,7 @@
 			</el-table-column>
 		</el-table>
 
-		<el-dialog v-model="menuDialog" :title="title" width="30%" @close="close">
+		<el-dialog v-model="menuDialog" :title="title" width="25%" @close="close">
 			<MenuInfo :menuInfo="menuInfo" />
 			<template #footer>
 				<el-button @click="close">取消</el-button>
@@ -38,7 +39,7 @@
 			</template>
 		</el-dialog>
 
-		<el-dialog v-model="fucDialog" width="30%">
+		<el-dialog v-model="fucDialog" title="功能项" width="25%">
 			<FucInfo :fucInfo="fucInfo" />
 			<template #footer>
 				<el-button @click="fucDialog = false">取消</el-button>
@@ -53,6 +54,7 @@ import Icon from '@/components/common/Icon'
 import MenuInfo from './menu/MenuInfo'
 import FucInfo from './menu/FucInfo'
 import { ref } from 'vue'
+import { useRoute } from 'vue-router'
 
 // 菜单模块的新增编辑
 const menus = [
@@ -116,6 +118,11 @@ let showFuc = _ => (fucDialog.value = true)
 let send = _ => {
 	fucDialog.value = false
 }
+
+// 权限操作
+console.log(useRoute())
+let showCheck = (menuId, btnId, expand = null) =>
+	!!funcs.find(v => v.menuId == menuId && v.symbol == btnId) && !!expand
 
 let refresh = _ => location.reload()
 </script>

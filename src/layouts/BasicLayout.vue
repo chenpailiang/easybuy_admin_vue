@@ -28,7 +28,6 @@ import Aside from '@/components/layout/aside/Aside'
 	height: 100vh;
 	overflow: hidden;
 	align-items: stretch;
-	min-width: 1140px;
 }
 aside {
 	width: 18.26rem;

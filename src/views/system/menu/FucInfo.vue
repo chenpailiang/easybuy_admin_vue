@@ -1,5 +1,5 @@
 <template>
-	<el-form :model="menuInfo" label-width="80px">
+	<el-form :model="fucInfo" ref="fucForm" label-width="80px">
 		<el-form-item label="菜单名称">
 			{{'系统管理'}}
 		</el-form-item>
@@ -7,7 +7,7 @@
 			<el-input v-model="fucInfo.name" placeholder="请输入名称" />
 		</el-form-item>
 		<el-form-item label="编码">
-			<el-input v-model="fucInfo.code" placeholder="请输入编码" />
+			<el-input v-model="fucInfo.symbol" placeholder="请输入编码" />
 		</el-form-item>
 		<el-form-item label="权限值">
 			<el-input v-model="fucInfo.sort" placeholder="请输入权限值" />
@@ -19,15 +19,21 @@
 </template>
 
 <script setup>
+import { ref } from 'vue'
 defineProps({
 	fucInfo: Object,
+})
+
+let fucForm = ref()
+defineExpose({
+	fucForm
 })
 </script>
 
 <style scoped>
 .el-form {
 	display: grid;
-	grid: auto / 20rem;
+	grid: auto / 25rem;
 	justify-content: center;
 }
 </style>

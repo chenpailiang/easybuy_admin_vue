@@ -1,4 +1,4 @@
-export function timeFix() {
+export function timeFix () {
 	const time = new Date()
 	const hour = time.getHours()
 	return hour < 9
@@ -12,7 +12,8 @@ export function timeFix() {
 		: '晚上好'
 }
 
-export function listToTree(list, tree, parentId) {
+// menu渲染成tree
+export function listToTree (list, tree, parentId) {
 	list.forEach(item => {
 		// 判断是否为父级菜单
 		if (item.parentId === parentId) {
