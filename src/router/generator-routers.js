@@ -134,7 +134,7 @@ export const generatorRouter = (menus, routers) => {
 			v.children.forEach(u => {
 				u.component = routers[u.symbol]
 				u.path = `${u.symbol}`
-				u.meta = { menuId: u.id }
+				u.meta = { menuId: u.id, isPage: true }
 			})
 	})
 	const result = menus.map(v => ({
