@@ -108,7 +108,7 @@ const listToTree = (list, tree, parentId) => {
 				// key: item.key || item.name,
 				children: [],
 			}
-			// 迭代 list， 找到当前菜单相符合的所有子菜单
+			// 子菜单递归
 			listToTree(list, child.children, item.id)
 			// 删掉不存在 children 值的属性
 			if (child.children.length <= 0) delete child.children
@@ -137,40 +137,33 @@ const root = {
 	生成路由
 */
 const generatorRouter = menus => {
-	let menuList = []
-	listToTree(menus, menuList, 0)
-	menuList.forEach(v => {
-		v.component = constantRouterComponents['RouteView']
-		v.redirect = `/${v.symbol}/${v.children[0].symbol}`
-		v.path = `/${v.symbol}`
-		v.name = v.symbol
-		v.meta = { menuId: v.id }
-		v.children &&
-			v.children.forEach(u => {
-				u.component = constantRouterComponents[u.symbol]
-				u.path = `${u.symbol}`
-				u.name = u.symbol
-				u.meta = { menuId: u.id, isPage: true }
-			})
+	let menuList = menus.map(v => {
+		let firstChild = menus.find(m => m.parentId === v.id)
+		return {
+			parentId: v.parentId,
+			id: v.id,
+			path: !firstChild ? v.symbol : `/${v.symbol}`,
+			name: v.name,
+			component:
+				v.parentId === 0
+					? constantRouterComponents['RouteView']
+					: constantRouterComponents[v.symbol],
+			redirect: !firstChild ? null : `/${v.symbol}/${firstChild.symbol}`,
+			meta: {
+				menuId: v.id,
+				isPage: !firstChild,
+				icon: v.icon,
+			},
+		}
 	})
-	const result = menuList.map(v => ({
-		path: v.path,
-		name: v.name,
-		component: v.component,
-		redirect: v.redirect,
-		meta: v.meta,
-		children: v.children.map(u => ({
-			name: u.name,
-			path: u.path,
-			component: u.component,
-			meta: u.meta,
-		})),
-	}))
+	let result = []
+	listToTree(menuList, result, 0)
 	return result
 }
 export const generatorDynamicRouters = menus => {
 	let dynamicRouters = generatorRouter(menus)
 	let routers = root
 	dynamicRouters.forEach(r => routers.children.push(r))
+
 	return routers
 }
