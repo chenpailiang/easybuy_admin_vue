@@ -59,5 +59,6 @@ export const constantRouterMap = [
 	// 404路由
 	{
 		path: '/:pathMatch(.*)*',
+		// path: '/:catchAll(.*)*'
 	},
 ]

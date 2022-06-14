@@ -1,4 +1,4 @@
-import { login, getInfo } from '@/api/login'
+import { login, getPermissionsList } from '@/api/login'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 import storage from 'store'
 import router from '@/router'
@@ -31,7 +31,7 @@ const user = {
 			})
 		},
 		// 获取权限信息
-		getPermissionsList({ commit }) {
+		getPermissionsList({ commit, state }) {
 			return new Promise((resolve, reject) => {
 				getPermissionsList()
 					.then(res => {

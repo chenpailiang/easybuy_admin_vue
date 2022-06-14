@@ -4,6 +4,7 @@ import storage from 'store'
 import store from '@/store'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 import { generatorDynamicRouters } from '@/router/generator-routers'
+import { computed } from 'vue'
 
 NProgress.configure({ showSpinner: false })
 
@@ -42,14 +43,16 @@ export const setupBeforeEach = router => {
 	router.beforeEach((to, from, next) => {
 		NProgress.start()
 		if (storage.get(ACCESS_TOKEN)) {
-			if (JSON.stringify(store.state.user.permissions) == '{}') {
-				// store.dispatch('user/getPermissionsList').then(res => {
-				// 	let routers = generatorDynamicRouters(res.menus)
-				// 	router.addRoute(routers)
-				// })
-				store.commit('user/SET_PERMISSIONS', { name: 'test' })
-				let routers = generatorDynamicRouters(menus)
-				router.addRoute(routers)
+			let permissions = computed(_=>store.getters['user/permissions'])
+			if (JSON.stringify(permissions.value) === '{}') {
+				console.log(permissions.value)
+				store.dispatch('user/getPermissionsList').then(res => {
+					let routers = generatorDynamicRouters(res.menus)
+					router.addRoute(routers)
+				})
+				// store.commit('user/SET_PERMISSIONS', { name: 'test' })
+				// let routers = generatorDynamicRouters(menus)
+				// router.addRoute(routers)
 				const redirect = decodeURIComponent(from.query.redirect || to.path)
 				if (to.path === redirect) next({ ...to, replace: true })
 				else next({ path: redirect })
