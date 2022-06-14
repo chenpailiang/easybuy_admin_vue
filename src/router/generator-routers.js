@@ -136,7 +136,7 @@ const root = {
 /* 
 	生成路由
 */
-export const generatorRouter = menus => {
+const generatorRouter = menus => {
 	let menuList = []
 	listToTree(menus, menuList, 0)
 	menuList.forEach(v => {
