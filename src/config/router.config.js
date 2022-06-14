@@ -9,7 +9,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/index/Index'),
 			},
 			{
-				path: '/system',                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+				path: '/system',
 				redirect: '/system/user',
 				component: () => import('@/layouts/RouteView'),
 				children: [
@@ -55,5 +55,9 @@ export const constantRouterMap = [
 				component: () => import('@/views/user/Login'),
 			},
 		],
+	},
+	// 404路由
+	{
+		path: '/:pathMatch(.*)*',
 	},
 ]

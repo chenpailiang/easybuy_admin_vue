@@ -3,7 +3,6 @@ import storage from 'store'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 import tokenServer from './refreshToken'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { useRouter } from 'vue-router'
 import store from '@/store'
 import router from '@/router'
 const request = axios.create({

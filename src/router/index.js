@@ -4,7 +4,7 @@ import { setupBeforeEach, setupAfterEach } from './permission'
 
 const router = createRouter({
 	history: createWebHistory(process.env.BASE_URL),
-	routes: [...constantRouterMap, ...asyncRouterMap],
+	routes: constantRouterMap,
 })
 setupBeforeEach(router)
 setupAfterEach(router)

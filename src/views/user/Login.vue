@@ -31,23 +31,24 @@ let rules = reactive({
 let store = useStore()
 let router = useRouter()
 let login = _ => {
-	refForm.value.validate(async ok => {
-		loading.value = true
-		if (ok) {
-			let res = await store.dispatch('user/Login', form)
-			if (res.success) {
-				loading.value = false
-				router.push('/')
-				setTimeout(_ => {
-					ElNotification({
-						title: '欢迎',
-						message: `${timeFix()}，欢迎回来`,
-						type: 'success',
-					})
-				})
-			}
-		}
-	})
+	// refForm.value.validate(async ok => {
+	// 	loading.value = true
+	// 	if (ok) {
+	// 		let res = await store.dispatch('user/Login', form)
+	// 		if (res.success) {
+	// 			loading.value = false
+	// 			router.push('/')
+	// 			setTimeout(_ => {
+	// 				ElNotification({
+	// 					title: '欢迎',
+	// 					message: `${timeFix()}，欢迎回来`,
+	// 					type: 'success',
+	// 				})
+	// 			})
+	// 		}
+	// 	}
+	// })
+	router.push('/')
 }
 </script>
 

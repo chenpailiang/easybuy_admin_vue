@@ -120,7 +120,7 @@ let send = _ => {
 }
 
 // 权限操作
-console.log(useRoute())
+let route = useRoute()
 let showCheck = (menuId, btnId, expand = null) =>
 	!!funcs.find(v => v.menuId == menuId && v.symbol == btnId) && !!expand
 

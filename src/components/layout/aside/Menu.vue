@@ -27,8 +27,6 @@ import { ref, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { getPermissionsList } from '@/api/login'
 import { listToTree } from '@/utils/util'
-import { generatorRouter } from '@/router/generator-routers'
-import { dynamicRouters } from '@/router/dynamicRouters'
 
 let menus = [
 	{
@@ -41,10 +39,7 @@ let menus = [
 		],
 	},
 ]
-let routers = generatorRouter(menus, dynamicRouters)
-console.log(routers)
 let route = useRoute()
-let router = useRouter()
 let currentKey = ref(route.path)
 watch(
 	_ => route,

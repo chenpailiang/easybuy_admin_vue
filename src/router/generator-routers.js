@@ -20,9 +20,8 @@ const rootRouter = {
 }
 // 前端未找到页面路由（固定不用改）
 const notFoundRouter = {
-	path: '/:catchAll(.*)',
+	path: '/:pathMatch(.*)*',
 	redirect: '/404',
-	hidden: true,
 }
 
 /**
@@ -106,15 +105,13 @@ const listToTree = (list, tree, parentId) => {
 		if (item.parentId === parentId) {
 			const child = {
 				...item,
-				key: item.key || item.name,
+				// key: item.key || item.name,
 				children: [],
 			}
 			// 迭代 list， 找到当前菜单相符合的所有子菜单
 			listToTree(list, child.children, item.id)
 			// 删掉不存在 children 值的属性
-			if (child.children.length <= 0) {
-				delete child.children
-			}
+			if (child.children.length <= 0) delete child.children
 			// 加入到树中
 			tree.push(child)
 		}
@@ -122,27 +119,58 @@ const listToTree = (list, tree, parentId) => {
 }
 
 /* 
+	根级路由
+*/
+const root = {
+	path: '/',
+	component: () => import('@/layouts/BasicLayout'),
+	redirect: '/index/index',
+	children: [
+		{
+			path: '/index/index',
+			component: () => import('@/views/index/Index'),
+		},
+	],
+}
+
+/* 
 	生成路由
 */
-export const generatorRouter = (menus, routers) => {
-	menus.forEach(v => {
-		v.component = routers['RouteView']
+export const generatorRouter = menus => {
+	let menuList = []
+	listToTree(menus, menuList, 0)
+	menuList.forEach(v => {
+		v.component = constantRouterComponents['RouteView']
 		v.redirect = `/${v.symbol}/${v.children[0].symbol}`
 		v.path = `/${v.symbol}`
+		v.name = v.symbol
 		v.meta = { menuId: v.id }
 		v.children &&
 			v.children.forEach(u => {
-				u.component = routers[u.symbol]
+				u.component = constantRouterComponents[u.symbol]
 				u.path = `${u.symbol}`
+				u.name = u.symbol
 				u.meta = { menuId: u.id, isPage: true }
 			})
 	})
-	const result = menus.map(v => ({
+	const result = menuList.map(v => ({
 		path: v.path,
+		name: v.name,
 		component: v.component,
 		redirect: v.redirect,
 		meta: v.meta,
-		children: v.children.map(u => ({ path: u.path, component: u.component, meta: u.meta })),
+		children: v.children.map(u => ({
+			name: u.name,
+			path: u.path,
+			component: u.component,
+			meta: u.meta,
+		})),
 	}))
 	return result
+}
+export const generatorDynamicRouters = menus => {
+	let dynamicRouters = generatorRouter(menus)
+	let routers = root
+	dynamicRouters.forEach(r => routers.children.push(r))
+	return routers
 }
