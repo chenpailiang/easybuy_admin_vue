@@ -61,14 +61,14 @@ const user = {
 		// 获取权限信息
 		getPermissionsList({ commit }) {
 			return new Promise((resolve, reject) => {
-				// getPermissionsList()
-				// 	.then(res => {
-				// 		commit('SET_PERMISSIONS', res)
-				// 		resolve(res)
-				// 	})
-				// 	.catch(err => reject(err))
-				commit('SET_PERMISSIONS', { name: 'zs' })
-				resolve(menus)
+				getPermissionsList()
+					.then(res => {
+						commit('SET_PERMISSIONS', res)
+						resolve(res)
+					})
+					.catch(err => reject(err))
+				// commit('SET_PERMISSIONS', { name: 'zs' })
+				// resolve(menus)
 			})
 		},
 		//登出
