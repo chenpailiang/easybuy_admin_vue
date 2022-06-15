@@ -4,8 +4,8 @@
 
 		<section>
 			<span>菜单名称：</span>
-			<el-input placeholder="请输入菜单名称" />
-			<el-button type="primary">查询</el-button>
+			<el-input v-model="menuName" placeholder="请输入菜单名称" />
+			<el-button type="primary" @click="searchMenu">查询</el-button>
 		</section>
 
 		<div class="op">
@@ -13,7 +13,7 @@
 			<Icon Icon="Refresh" :size="20" color="#409eff" @click="refresh" style="cursor: pointer;" />
 		</div>
 
-		<el-table :data="menus" row-key="id"
+		<el-table v-if="menuList.length > 0" :data="menuList" row-key="id"
 			:header-cell-style="{ background: '#f5f7fa', color: '#000000' }" border>
 			<el-table-column prop="name" label="菜单名称" />
 			<el-table-column prop="symbol" label="菜单编码" width="200" />
@@ -30,6 +30,7 @@
 				</template>
 			</el-table-column>
 		</el-table>
+		<el-empty v-else description="暂无数据" />
 
 		<el-dialog v-model="menuDialog" :title="title" width="25%" @close="close">
 			<MenuInfo :menuInfo="menuInfo" />
@@ -55,47 +56,26 @@ import MenuInfo from './menu/MenuInfo'
 import FucInfo from './menu/FucInfo'
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
+import { getMenuList } from '@/api/menu'
+import { listToTree } from '@/utils/util'
+
+// 菜单按钮
+let menuList = ref([])
+let funcs = ref()
+
+// 查询菜单
+let menuName = ref('')
+let searchMenu = async _ => {
+	menuList.value = []
+	let { menus: s, funcs: v } = await getMenuList(menuName.value)
+	if (menuName.value) menuList.value = s
+	else listToTree(s, menuList.value, 0)
+	funcs.value = v
+	console.log('menu', menuList.value)
+	console.log(funcs.value)
+}
 
 // 菜单模块的新增编辑
-const menus = [
-	{
-		id: 1,
-		name: '系统管理',
-		symbol: 'system',
-		icon: 'Setting',
-		children: [
-			{
-				id: 3,
-				name: '菜单管理',
-				symbol: 'menu',
-				path: '/system/menu',
-				funcs: '查询 新增模块 +子菜单 +功能 编辑 删除',
-			},
-			{
-				id: 4,
-				name: '用户管理',
-				symbol: 'user',
-				path: '/system/user',
-				funcs: '查询 新增 编辑 删除',
-			},
-		],
-	},
-	{
-		id: 2,
-		name: '商品管理',
-		symbol: 'goods',
-		icon: 'Menu',
-	},
-]
-const funcs = [
-	{
-		id: 1,
-		menuId: 1,
-		name: '查询',
-		symbol: 'Search',
-		description: '查询菜单',
-	},
-]
 let menuInfo = ref({})
 let menuDialog = ref(false)
 let title = ref('')

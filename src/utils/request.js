@@ -19,7 +19,7 @@ const request = axios.create({
 request.interceptors.request.use(
 	config => {
 		let token = storage.get(ACCESS_TOKEN)
-		if (token) config.headers['Authorization'] = `Bearer ${token}`	
+		if (token) config.headers['Authorization'] = `Bearer ${token}`
 		return config
 	},
 	err => Promise.reject(error)
@@ -64,18 +64,18 @@ const http = {
 				.catch(err => reject(err))
 		})
 	},
-	put(url, data) {
+	put(url, data, aid) {
 		return new Promise((resolve, reject) => {
 			request
-				.put(url, JSON.stringify(data))
+				.put(url, JSON.stringify(data), { headers: { aid } })
 				.then(res => resolve(res))
 				.catch(err => reject(err))
 		})
 	},
-	delete(url, params) {
+	delete(url, params, aid) {
 		return new Promise((resolve, reject) => {
 			request
-				.delete(url, { params })
+				.delete(url, { params, headers: { aid } })
 				.then(res => resolve(res))
 				.catch(err => reject(err))
 		})

@@ -24,9 +24,8 @@
 <script setup>
 import Icon from '@/components/common/Icon'
 import { ref, onMounted, watch, computed } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
-import { getPermissionsList } from '@/api/login'
 import { listToTree } from '@/utils/util'
 
 // let menus = [

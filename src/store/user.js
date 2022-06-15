@@ -4,34 +4,6 @@ import storage from 'store'
 import router from '@/router'
 import { createRouter } from 'vue-router'
 
-// test
-let menus = [
-	{
-		id: 1,
-		parentId: 0,
-		name: '系统管理',
-		symbol: 'system',
-		icon: 'Setting',
-		sort: 1,
-	},
-	{
-		id: 2,
-		parentId: 1,
-		name: '菜单管理',
-		symbol: 'menu',
-		icon: null,
-		sort: 1,
-	},
-	{
-		id: 3,
-		parentId: 1,
-		name: '用户管理',
-		symbol: 'user',
-		icon: null,
-		sort: 1,
-	},
-]
-
 const user = {
 	namespaced: true,
 	state: {
@@ -67,8 +39,6 @@ const user = {
 						resolve(res)
 					})
 					.catch(err => reject(err))
-				// commit('SET_PERMISSIONS', { name: 'zs' })
-				// resolve(menus)
 			})
 		},
 		//登出
