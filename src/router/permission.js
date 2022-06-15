@@ -11,48 +11,18 @@ NProgress.configure({ showSpinner: false })
 const defaultRoutePath = '/index/index'
 const whiteList = ['login', 'register', 'registerResult']
 
-// test
-let menus = [
-	{
-		id: 1,
-		parentId: 0,
-		name: '系统管理',
-		symbol: 'system',
-		icon: 'Setting',
-		sort: 1,
-	},
-	{
-		id: 2,
-		parentId: 1,
-		name: '菜单管理',
-		symbol: 'menu',
-		icon: null,
-		sort: 1,
-	},
-	{
-		id: 3,
-		parentId: 1,
-		name: '用户管理',
-		symbol: 'user',
-		icon: null,
-		sort: 1,
-	},
-]
-
 export const setupBeforeEach = router => {
 	router.beforeEach((to, from, next) => {
 		NProgress.start()
 		if (storage.get(ACCESS_TOKEN)) {
-			let permissions = computed(_=>store.getters['user/permissions'])
+			let permissions = computed(_ => store.getters['user/permissions'])
 			if (JSON.stringify(permissions.value) === '{}') {
 				console.log(permissions.value)
+				console.log('test')
 				store.dispatch('user/getPermissionsList').then(res => {
-					let routers = generatorDynamicRouters(res.menus)
+					let routers = generatorDynamicRouters(res)
 					router.addRoute(routers)
 				})
-				// store.commit('user/SET_PERMISSIONS', { name: 'test' })
-				// let routers = generatorDynamicRouters(menus)
-				// router.addRoute(routers)
 				const redirect = decodeURIComponent(from.query.redirect || to.path)
 				if (to.path === redirect) next({ ...to, replace: true })
 				else next({ path: redirect })
