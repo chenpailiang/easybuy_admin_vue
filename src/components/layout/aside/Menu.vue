@@ -23,22 +23,23 @@
 
 <script setup>
 import Icon from '@/components/common/Icon'
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 import { getPermissionsList } from '@/api/login'
 import { listToTree } from '@/utils/util'
 
-let menus = [
-	{
-		symbol: 'system',
-		name: '系统管理',
-		icon: 'Setting',
-		children: [
-			{ symbol: 'menu', name: '菜单管理', icon: null },
-			{ symbol: 'user', name: '用户管理', icon: null },
-		],
-	},
-]
+// let menus = [
+// 	{
+// 		symbol: 'system',
+// 		name: '系统管理',
+// 		icon: 'Setting',
+// 		children: [
+// 			{ symbol: 'menu', name: '菜单管理', icon: null },
+// 			{ symbol: 'user', name: '用户管理', icon: null },
+// 		],
+// 	},
+// ]
 let route = useRoute()
 let currentKey = ref(route.path)
 watch(
@@ -46,12 +47,13 @@ watch(
 	v => (currentKey.value = v.path)
 )
 
-// let menus = ref([])
-// async function get() {
-// 	let menuList = (await getPermissionsList()).menus
-// 	listToTree(menuList, menus.value, 0)
-// }
-// onMounted(async _ => await get())
+let store = useStore()
+let menuList = computed(_ => store.getters['user/permissions'].menus)
+let menus = ref([])
+async function get() {
+	listToTree(menuList.value, menus.value, 0)
+}
+onMounted(async _ => await get())
 </script>
 
 <style scoped>

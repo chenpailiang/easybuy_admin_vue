@@ -22,8 +22,6 @@ export const setupBeforeEach = router => {
 			} else {
 				let permissions = computed(_ => store.getters['user/permissions'])
 				if (JSON.stringify(permissions.value) === '{}') {
-					console.log(permissions.value)
-					console.log('test')
 					store
 						.dispatch('user/getPermissionsList')
 						.then(res => {
@@ -53,6 +51,5 @@ export const setupBeforeEach = router => {
 		}
 	})
 }
-export const setupAfterEach = router => {
-	router.afterEach(() => NProgress.done())
-}
+
+export const setupAfterEach = router => router.afterEach(() => NProgress.done())
