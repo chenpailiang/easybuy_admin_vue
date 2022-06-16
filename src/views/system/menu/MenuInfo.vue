@@ -1,7 +1,7 @@
 <template>
 	<el-form :model="menuInfo" ref="menuForm" label-width="80px">
-		<el-form-item label="上级菜单">
-			{{'系统管理'}}
+		<el-form-item v-if="menuInfo.parentMenu" label="上级菜单">
+			{{ menuInfo.parentMenu }}
 		</el-form-item>
 		<el-form-item label="菜单名称">
 			<el-input v-model="menuInfo.name" placeholder="请输入名称" />
@@ -11,9 +11,6 @@
 		</el-form-item>
 		<el-form-item label="图标">
 			<el-input v-model="menuInfo.icon" placeholder="请输入图标" />
-		</el-form-item>
-		<el-form-item label="页面地址">
-			<el-input v-model="menuInfo.path" placeholder="请输入页面地址" />
 		</el-form-item>
 		<el-form-item label="排序">
 			<el-input v-model="menuInfo.sort" placeholder="请输入排序" />
@@ -30,7 +27,7 @@ defineProps({
 
 let menuForm = ref()
 defineExpose({
-	menuForm
+	menuForm,
 })
 </script>
 
