@@ -2,34 +2,36 @@
 	<div>
 		<h2>菜单管理</h2>
 
-		<section>
+		<section v-if="showCheck($route.meta.menuId, 'Search', $route.meta.isPage)">
 			<span>菜单名称：</span>
 			<el-input v-model="menuName" placeholder="请输入菜单名称" />
 			<el-button type="primary" @click="searchMenu">查询</el-button>
 		</section>
+		
+		<div v-if="menuList.length > 0">
+			<div class="op">
+				<el-button type="primary" @click="show('新增模块')">新增模块</el-button>
+				<Icon Icon="Refresh" :size="20" color="#409eff" @click="refresh" style="cursor: pointer;" />
+			</div>
 
-		<div class="op">
-			<el-button type="primary" @click="show('新增模块')">新增模块</el-button>
-			<Icon Icon="Refresh" :size="20" color="#409eff" @click="refresh" style="cursor: pointer;" />
+			<el-table :data="menuList" row-key="id"
+				:header-cell-style="{ background: '#f5f7fa', color: '#000000' }" border>
+				<el-table-column prop="name" label="菜单名称" />
+				<el-table-column prop="symbol" label="菜单编码" width="200" />
+				<el-table-column prop="icon" label="图标" width="200" />
+				<el-table-column prop="path" label="页面地址" />
+				<el-table-column prop="funcs" label="功能项" />
+				<el-table-column label="操作" align="center">
+					<template #default="{ row: v }">
+						<el-button v-if="v" type="primary" text size="small" @click="show('+子菜单')">+子菜单
+						</el-button>
+						<el-button type="primary" text size="small" @click="showFuc">+功能</el-button>
+						<el-button type="primary" text size="small" @click="show('编辑菜单')">编辑</el-button>
+						<el-button type="danger" text size="small">删除</el-button>
+					</template>
+				</el-table-column>
+			</el-table>
 		</div>
-
-		<el-table v-if="menuList.length > 0" :data="menuList" row-key="id"
-			:header-cell-style="{ background: '#f5f7fa', color: '#000000' }" border>
-			<el-table-column prop="name" label="菜单名称" />
-			<el-table-column prop="symbol" label="菜单编码" width="200" />
-			<el-table-column prop="icon" label="图标" width="200" />
-			<el-table-column prop="path" label="页面地址" />
-			<el-table-column prop="funcs" label="功能项" />
-			<el-table-column label="操作" align="center">
-				<template #default="{ row: v }">
-					<el-button v-if="v" type="primary" text size="small" @click="show('+子菜单')">+子菜单
-					</el-button>
-					<el-button type="primary" text size="small" @click="showFuc">+功能</el-button>
-					<el-button type="primary" text size="small" @click="show('编辑菜单')">编辑</el-button>
-					<el-button type="danger" text size="small">删除</el-button>
-				</template>
-			</el-table-column>
-		</el-table>
 		<el-empty v-else description="暂无数据" />
 
 		<el-dialog v-model="menuDialog" :title="title" width="25%" @close="close">
@@ -54,8 +56,8 @@
 import Icon from '@/components/common/Icon'
 import MenuInfo from './menu/MenuInfo'
 import FucInfo from './menu/FucInfo'
-import { ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { computed, ref } from 'vue'
+import { useStore } from 'vuex'
 import { getMenuList } from '@/api/menu'
 import { listToTree } from '@/utils/util'
 
@@ -67,10 +69,10 @@ let funcs = ref()
 let menuName = ref('')
 let searchMenu = async _ => {
 	menuList.value = []
-	let { menus: s, funcs: v } = await getMenuList(menuName.value)
-	if (menuName.value) menuList.value = s
+	let { menus: v1, funcs: v2 } = await getMenuList(menuName.value)
+	if (menuName.value) menuList.value = v1
 	else listToTree(s, menuList.value, 0)
-	funcs.value = v
+	funcs.value = v2
 	console.log('menu', menuList.value)
 	console.log(funcs.value)
 }
@@ -100,9 +102,10 @@ let send = _ => {
 }
 
 // 权限操作
-let route = useRoute()
+let store = useStore()
+let fucs = computed(_ => store.getters['user/permissions'].funcs)
 let showCheck = (menuId, btnId, expand = null) =>
-	!!funcs.find(v => v.menuId == menuId && v.symbol == btnId) && !!expand
+	!!fucs.value.find(v => v.menuId == menuId && v.symbol == btnId) && !!expand
 
 let refresh = _ => location.reload()
 </script>

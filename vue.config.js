@@ -15,9 +15,7 @@ module.exports = {
 			'/api': {
 				target: 'http://easyadmin.free.svipss.top',
 				changeOrigin: true,
-				pathRewrite: {
-					'^/api': '',
-				}
+				pathRewrite: { '^/api': '' },
 			},
 		},
 	},

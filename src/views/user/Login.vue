@@ -32,8 +32,8 @@ let store = useStore()
 let router = useRouter()
 let login = _ => {
 	refForm.value.validate(async ok => {
-		loading.value = true
 		if (ok) {
+			loading.value = true
 			let res = await store.dispatch('user/Login', form)
 			if (res.success) {
 				loading.value = false
