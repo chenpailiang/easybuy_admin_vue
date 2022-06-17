@@ -14,6 +14,9 @@ const request = axios.create({
 		post: {
 			'Content-Type': 'application/json;charset=UTF-8',
 		},
+		put: {
+			'Content-Type': 'application/json;charset=UTF-8',
+		},
 	},
 })
 request.interceptors.request.use(
