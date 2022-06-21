@@ -16,3 +16,12 @@ export function editMenu(data) {
 export function delMenu(data) {
 	return http.delete(`/api/menu/${data}`, '', 123)
 }
+// 新增功能
+export function addFunc(data) {
+	return http.post('/api/menu/funcs', data, 120)
+}
+// 编辑功能
+export function editFunc(data) {
+	return http.put('/api/menu/funcs', data, 120)
+}
+
