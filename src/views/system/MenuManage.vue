@@ -14,7 +14,7 @@
 				<Icon Icon="Refresh" :size="20" color="#409eff" @click="refresh" style="cursor: pointer;" />
 			</div>
 
-			<el-table :data="menuList" row-key="id"
+			<el-table :data="menuList" v-loading="loading" row-key="id"
 				:header-cell-style="{ background: '#f5f7fa', color: '#000000' }" border>
 				<el-table-column prop="name" label="菜单名称" />
 				<el-table-column prop="symbol" label="菜单编码" width="200" />
@@ -26,7 +26,13 @@
 						</el-button>
 						<el-button type="primary" text size="small" @click="showFuc">+功能</el-button>
 						<el-button type="primary" text size="small" @click="show('编辑菜单',v)">编辑</el-button>
-						<el-button type="danger" text size="small">删除</el-button>
+						<el-popconfirm title="确定删除该菜单?" confirmButtonText="是" cancelButtonText="否"
+							@confirm="deleteMenu(v)">
+							<template #reference>
+								<el-button type="danger" text size="small">删除
+								</el-button>
+							</template>
+						</el-popconfirm>
 					</template>
 				</el-table-column>
 			</el-table>
@@ -55,10 +61,12 @@
 import Icon from '@/components/common/Icon'
 import MenuInfo from './menu/MenuInfo'
 import FucInfo from './menu/FucInfo'
+import { ElMessage } from 'element-plus'
 import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import { listToTree } from '@/utils/util'
 import { getMenuList, addMenu, editMenu, delMenu } from '@/api/menu'
+import { fa } from 'element-plus/lib/locale'
 
 // 菜单按钮
 let menuList = ref([])
@@ -66,9 +74,12 @@ let funcs = ref()
 
 // 查询菜单
 let menuName = ref('')
+let loading = ref(false)
 let searchMenu = async _ => {
 	menuList.value = []
+	loading.value = true
 	let { menus: v1, funcs: v2 } = await getMenuList(menuName.value)
+	loading.value = false
 	if (menuName.value) menuList.value = v1
 	else listToTree(v1, menuList.value, 0)
 	funcs.value = v2
@@ -78,20 +89,33 @@ let searchMenu = async _ => {
 let menuInfo = ref({})
 let menuDialog = ref(false)
 let title = ref('')
-let show = (name, v = null, hasChildren) => {
+let show = (name, v, hasChildren) => {
 	menuDialog.value = true
 	title.value = name
 	if (!hasChildren && v) menuInfo.value = v
-	if (hasChildren && v) menuInfo.value.parentMenu = v.name
+	else {
+		menuInfo.value.parentMenu = v?.name ? v.name : ''
+		menuInfo.value.parentId = v?.id ? v.id : 0
+	}
 }
 let close = _ => {
 	menuInfo.value = {}
 	menuDialog.value = false
 }
-let sendOk = _ => {
-	menuDialog.value = false
+let sendOk = async _ => {
+	try {
+		menuInfo.value.id ? await editMenu(menuInfo.value) : await addMenu(menuInfo.value)
+		ElMessage({ message: '操作成功', type: 'success' })
+		close()
+		searchMenu()
+	} catch {
+		ElMessage({ message: '操作失败', type: 'error' })
+	}
 }
-
+let deleteMenu = async v => {
+	await delMenu(v.id)
+	searchMenu()
+}
 // 功能新增编辑
 let fucInfo = ref({})
 let fucDialog = ref(false)
