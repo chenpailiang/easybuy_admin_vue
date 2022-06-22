@@ -22,10 +22,10 @@
 				<el-table-column prop="funcs" label="功能项" />
 				<el-table-column label="操作" align="center">
 					<template #default="{ row: v }">
-						<el-button type="primary" text size="small" @click="show('+子菜单',v,1)">+子菜单
+						<el-button type="primary" text size="small" @click="show('+子菜单', v, 1)">+子菜单
 						</el-button>
 						<el-button type="primary" text size="small" @click="showFuc">+功能</el-button>
-						<el-button type="primary" text size="small" @click="show('编辑菜单',v)">编辑</el-button>
+						<el-button type="primary" text size="small" @click="show('编辑菜单', v)">编辑</el-button>
 						<el-popconfirm title="确定删除该菜单?" confirmButtonText="是" cancelButtonText="否"
 							@confirm="deleteMenu(v)">
 							<template #reference>
@@ -39,11 +39,11 @@
 		</div>
 		<el-empty v-else description="暂无数据" />
 
-		<el-dialog v-model="menuDialog" :title="title" width="25%" @close="close">
+		<el-dialog v-model="menuDialog" :title="title" width="25%" @close="menuClose">
 			<MenuInfo :menuInfo="menuInfo" />
 			<template #footer>
 				<el-button @click="close">取消</el-button>
-				<el-button type="primary" @click="sendOk">确定</el-button>
+				<el-button type="primary" @click="sendMenu">确定</el-button>
 			</template>
 		</el-dialog>
 
@@ -51,7 +51,7 @@
 			<FucInfo :fucInfo="fucInfo" />
 			<template #footer>
 				<el-button @click="fucDialog = false">取消</el-button>
-				<el-button type="primary" @click="send">确定</el-button>
+				<el-button type="primary" @click="sendFunc">确定</el-button>
 			</template>
 		</el-dialog>
 	</div>
@@ -66,7 +66,6 @@ import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import { listToTree } from '@/utils/util'
 import { getMenuList, addMenu, editMenu, delMenu } from '@/api/menu'
-import { fa } from 'element-plus/lib/locale'
 
 // 菜单按钮
 let menuList = ref([])
@@ -98,29 +97,36 @@ let show = (name, v, hasChildren) => {
 		menuInfo.value.parentId = v?.id ? v.id : 0
 	}
 }
-let close = _ => {
-	menuInfo.value = {}
+let menuClose = _ => {
 	menuDialog.value = false
+	menuInfo.value = {}
 }
-let sendOk = async _ => {
+let sendMenu = async _ => {
 	try {
 		menuInfo.value.id ? await editMenu(menuInfo.value) : await addMenu(menuInfo.value)
 		ElMessage({ message: '操作成功', type: 'success' })
-		close()
+		menuClose()
 		searchMenu()
 	} catch {
 		ElMessage({ message: '操作失败', type: 'error' })
 	}
 }
 let deleteMenu = async v => {
-	await delMenu(v.id)
-	searchMenu()
+	try {
+		await delMenu(v.id)
+		searchMenu()
+		ElMessage({ message: '删除成功', type: 'success' })
+	} catch {
+		ElMessage({ message: '删除失败', type: 'error' })
+	}
 }
+
 // 功能新增编辑
 let fucInfo = ref({})
 let fucDialog = ref(false)
 let showFuc = _ => (fucDialog.value = true)
-let send = _ => {
+let funcClose = _ => {}
+let sendFunc = _ => {
 	fucDialog.value = false
 }
 
