@@ -1,3 +1,16 @@
+<script setup>
+import { ref } from 'vue'
+
+defineProps({
+	menuInfo: Object,
+})
+
+let menuForm = ref()
+defineExpose({
+	menuForm,
+})
+</script>
+
 <template>
 	<el-form :model="menuInfo" ref="menuForm" label-width="80px">
 		<el-form-item v-if="menuInfo.parentMenu" label="上级菜单">
@@ -17,19 +30,6 @@
 		</el-form-item>
 	</el-form>
 </template>
-
-<script setup>
-import { ref } from 'vue'
-
-defineProps({
-	menuInfo: Object,
-})
-
-let menuForm = ref()
-defineExpose({
-	menuForm,
-})
-</script>
 
 <style scoped>
 .el-form {

@@ -1,3 +1,15 @@
+<script setup>
+import { ref } from 'vue'
+defineProps({
+	fucInfo: Object,
+})
+
+let fucForm = ref()
+defineExpose({
+	fucForm
+})
+</script>
+
 <template>
 	<el-form :model="fucInfo" ref="fucForm" label-width="80px">
 		<el-form-item label="菜单名称">
@@ -17,18 +29,6 @@
 		</el-form-item>
 	</el-form>
 </template>
-
-<script setup>
-import { ref } from 'vue'
-defineProps({
-	fucInfo: Object,
-})
-
-let fucForm = ref()
-defineExpose({
-	fucForm
-})
-</script>
 
 <style scoped>
 .el-form {
