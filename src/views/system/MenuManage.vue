@@ -29,7 +29,7 @@ let searchMenu = async _ => {
 let menuInfo = ref({})
 let menuDialog = ref(false)
 let title = ref('')
-let show = (name, v, hasChildren) => {
+let showMenu = (name, v, hasChildren) => {
 	menuDialog.value = true
 	title.value = name
 	if (!hasChildren && v) menuInfo.value = JSON.parse(JSON.stringify(v))
@@ -65,7 +65,20 @@ let deleteMenu = async v => {
 // 功能新增编辑
 let fucInfo = ref({})
 let fucDialog = ref(false)
-let showFuc = _ => (fucDialog.value = true)
+let isAdd = ref(false)
+let isEdit = ref(false)
+let showFuc = (v, bool = false) => {
+	fucDialog.value = true
+	if (!!bool) {
+		fucInfo.value = JSON.parse(JSON.stringify(v))
+		isAdd.value = false
+		isEdit.value = true
+	} else {
+		fucInfo.value.menuName = v.name
+		isAdd.value = true
+		isEdit.value = false
+	}
+}
 let funcClose = _ => {
 	fucInfo.value = {}
 	fucDialog.value = false
@@ -89,13 +102,13 @@ let refresh = _ => location.reload()
 	<section v-if="showCheck($route.meta.menuId, 'Search', $route.meta.isPage)">
 		<span>菜单名称：</span>
 		<el-input v-model="menuName" placeholder="请输入菜单名称" />
-		<el-button type="primary" @click="searchMenu">查询</el-button>
+		<el-button @click="searchMenu" type="primary">查询</el-button>
 	</section>
 
 	<div v-if="menuList.length > 0">
 		<div class="op">
-			<el-button type="primary" @click="show('新增模块')">新增模块</el-button>
-			<Icon Icon="Refresh" :size="20" color="#409eff" @click="refresh" style="cursor: pointer;" />
+			<el-button type="primary" @click="showMenu('新增模块')">新增模块</el-button>
+			<Icon @click="refresh" Icon="Refresh" :size="20" color="#409eff" style="cursor: pointer;" />
 		</div>
 
 		<el-table :data="menuList" v-loading="loading" row-key="id"
@@ -105,16 +118,17 @@ let refresh = _ => location.reload()
 			<el-table-column prop="icon" label="图标" width="200" />
 			<el-table-column label="功能项">
 				<template #default="{ row: v }">
-					<el-button v-for="(k, i) in funcs.filter(s => s.menuId == v.id)" :key="i">{{ k.name }}
+					<el-button v-for="(k, i) in funcs.filter(s => s.menuId == v.id)" :key="i"
+						@click="showFuc(Object.assign(k, { menuName: v.name }), 1)">{{ k.name }}
 					</el-button>
 				</template>
 			</el-table-column>
 			<el-table-column label="操作" align="center">
 				<template #default="{ row: v }">
-					<el-button type="primary" text size="small" @click="show('+子菜单', v, 1)">+子菜单
+					<el-button @click="showMenu('+子菜单', v, 1)" type="primary" text size="small">+子菜单
 					</el-button>
-					<el-button type="primary" text size="small" @click="showFuc">+功能</el-button>
-					<el-button type="primary" text size="small" @click="show('编辑菜单', v)">编辑</el-button>
+					<el-button @click="showFuc(v)" type="primary" text size="small">+功能</el-button>
+					<el-button @click="showMenu('编辑菜单', v)" type="primary" text size="small">编辑</el-button>
 					<el-popconfirm title="确定删除该菜单?" confirmButtonText="是" cancelButtonText="否"
 						@confirm="deleteMenu(v)">
 						<template #reference>
@@ -132,15 +146,16 @@ let refresh = _ => location.reload()
 		<MenuInfo :menuInfo="menuInfo" />
 		<template #footer>
 			<el-button @click="menuClose">取消</el-button>
-			<el-button type="primary" @click="sendMenu">确定</el-button>
+			<el-button @click="sendMenu" type="primary">确定</el-button>
 		</template>
 	</el-dialog>
 
-	<el-dialog v-model="fucDialog" title="功能项" width="25%" @close="funcClose">
+	<el-dialog v-model="fucDialog" :title="isAdd ? '新增功能' : '编辑功能'" width="25%" @close="funcClose">
 		<FucInfo :fucInfo="fucInfo" />
 		<template #footer>
-			<el-button @click="funcClose">取消</el-button>
-			<el-button type="primary" @click="sendFunc">确定</el-button>
+			<el-button v-if="!isAdd" @click="funcClose" type="danger">删除</el-button>
+			<el-button v-if="!isAdd" type="primary">修改</el-button>
+			<el-button v-else @click="sendFunc" type="primary">保存</el-button>
 		</template>
 	</el-dialog>
 </template>

@@ -34,8 +34,8 @@ let refresh = _ => location.reload()
 	</section>
 
 	<div class="op">
-		<el-button type="primary" @click="userDialog = true;isAdd = true">新增模块</el-button>
-		<Icon Icon="Refresh" :size="20" color="#409eff" @click="refresh" style="cursor: pointer;" />
+		<el-button @click="userDialog = true;isAdd = true" type="primary">新增模块</el-button>
+		<Icon @click="refresh" Icon="Refresh" :size="20" color="#409eff" style="cursor: pointer;" />
 	</div>
 
 	<el-table :data="users" row-key="id" :header-cell-style="{ background: '#f5f7fa', color: '#000000' }"
@@ -56,7 +56,7 @@ let refresh = _ => location.reload()
 		<UserInfo :userInfo="userInfo" />
 		<template #footer>
 			<el-button @click="userDialog = false">取消</el-button>
-			<el-button type="primary" @click="sendUser">确定</el-button>
+			<el-button @click="sendUser" type="primary">确定</el-button>
 		</template>
 	</el-dialog>
 </template>

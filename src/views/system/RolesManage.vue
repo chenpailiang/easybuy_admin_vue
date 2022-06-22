@@ -42,7 +42,7 @@ let currentChange = v => {}
         <el-button type="primary">分配用户</el-button>
         <el-button type="primary">分配权限</el-button>
       </div>
-      <Icon Icon="Refresh" :size="20" color="#409eff" @click="refresh" style="cursor: pointer;" />
+      <Icon @click="refresh" Icon="Refresh" :size="20" color="#409eff" style="cursor: pointer;" />
     </div>
 
     <el-table :data="roles" row-key="id" :header-cell-style="{ background: '#f5f7fa', color: '#000000' }"
@@ -53,7 +53,7 @@ let currentChange = v => {}
         <template #default="{ row: v }">
           <el-button type="danger" text size="small">停用</el-button>
           <el-button type="primary" text size="small">启用</el-button>
-          <el-button type="primary" text size="small" @click="showEdit(v)">修改</el-button>
+          <el-button @click="showEdit(v)" type="primary" text size="small">修改</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -65,7 +65,7 @@ let currentChange = v => {}
       <RoleInfo :roleInfo="roleInfo" />
       <template #footer>
         <el-button @click="roleDialog = false">取消</el-button>
-        <el-button type="primary" @click="sendRole">确定</el-button>
+        <el-button @click="sendRole" type="primary">确定</el-button>
       </template>
     </el-dialog>
 </template>

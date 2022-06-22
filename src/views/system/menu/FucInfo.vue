@@ -13,7 +13,7 @@ defineExpose({
 <template>
 	<el-form :model="fucInfo" ref="fucForm" label-width="80px">
 		<el-form-item label="菜单名称">
-			{{'系统管理'}}
+			{{ fucInfo.menuName }}
 		</el-form-item>
 		<el-form-item label="功能名称">
 			<el-input v-model="fucInfo.name" placeholder="请输入名称" />
