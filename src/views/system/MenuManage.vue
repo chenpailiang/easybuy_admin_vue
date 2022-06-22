@@ -11,6 +11,7 @@ import { getMenuList, addMenu, editMenu, delMenu } from '@/api/menu'
 // 菜单按钮
 let menuList = ref([])
 let funcs = ref()
+let allMenus = []
 
 // 查询菜单
 let menuName = ref('')
@@ -19,6 +20,7 @@ let searchMenu = async _ => {
 	menuList.value = []
 	loading.value = true
 	let { menus: v1, funcs: v2 } = await getMenuList(menuName.value)
+	allMenus = v1
 	loading.value = false
 	if (menuName.value) menuList.value = v1
 	else listToTree(v1, menuList.value, 0)
@@ -89,25 +91,22 @@ let sendFunc = _ => {
 
 // 权限操作
 let store = useStore()
-let fucs = computed(_ => store.getters['user/permissions'].funcs)
-let showCheck = (menuId, btnId, expand = null) =>
-	!!fucs.value.find(v => v.menuId == menuId && v.symbol == btnId) && !!expand
-
+let isParentMenu = menuId => allMenus.findIndex(v => v.parentId == menuId) > -1
 let refresh = _ => location.reload()
 </script>
 
 <template>
 	<h2>菜单管理</h2>
 
-	<section v-if="showCheck($route.meta.menuId, 'Search', $route.meta.isPage)">
+	<section v-auth:search>
 		<span>菜单名称：</span>
 		<el-input v-model="menuName" placeholder="请输入菜单名称" />
-		<el-button @click="searchMenu" type="primary">查询</el-button>
+		<el-button v-auth:search @click="searchMenu" type="primary"></el-button>
 	</section>
 
 	<div v-if="menuList.length > 0">
 		<div class="op">
-			<el-button type="primary" @click="showMenu('新增模块')">新增模块</el-button>
+			<el-button v-auth:addModule type="primary" @click="showMenu('新增模块')"></el-button>
 			<Icon @click="refresh" Icon="Refresh" :size="20" color="#409eff" style="cursor: pointer;" />
 		</div>
 
@@ -125,14 +124,14 @@ let refresh = _ => location.reload()
 			</el-table-column>
 			<el-table-column label="操作" align="center">
 				<template #default="{ row: v }">
-					<el-button @click="showMenu('+子菜单', v, 1)" type="primary" text size="small">+子菜单
+					<el-button v-auth:addMenu @click="showMenu('+子菜单', v, 1)" type="primary" text size="small">
 					</el-button>
-					<el-button @click="showFuc(v)" type="primary" text size="small">+功能</el-button>
-					<el-button @click="showMenu('编辑菜单', v)" type="primary" text size="small">编辑</el-button>
+					<el-button v-auth:addFunc v-if="!isParentMenu(v.id)" @click="showFuc(v)" type="primary" text size="small"></el-button>
+					<el-button v-auth:editMenu @click="showMenu('编辑菜单', v)" type="primary" text size="small"></el-button>
 					<el-popconfirm title="确定删除该菜单?" confirmButtonText="是" cancelButtonText="否"
 						@confirm="deleteMenu(v)">
 						<template #reference>
-							<el-button type="danger" text size="small">删除
+							<el-button v-auth:delMenu type="danger" text size="small">删除
 							</el-button>
 						</template>
 					</el-popconfirm>

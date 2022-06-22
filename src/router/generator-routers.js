@@ -151,7 +151,6 @@ const generatorRouter = menus => {
 			redirect: !firstChild ? null : `/${v.symbol}/${firstChild.symbol}`,
 			meta: {
 				menuId: v.id,
-				isPage: !firstChild,
 				icon: v.icon,
 			},
 		}
