@@ -119,7 +119,9 @@ let refresh = _ => location.reload()
 			<el-table-column label="功能项">
 				<template #default="{ row: v }">
 					<el-button v-for="(k, i) in funcs.filter(s => s.menuId == v.id)" :key="i"
-						@click="showFuc(Object.assign(k, { menuName: v.name }), 1)">{{ k.name }}
+						@click="showFuc(Object.assign(k, { menuName: v.name }), 1)" type="primary"
+						size="small" text>
+						{{ k.name }}
 					</el-button>
 				</template>
 			</el-table-column>

@@ -60,5 +60,6 @@ export const constantRouterMap = [
 	{
 		path: '/:pathMatch(.*)*',
 		// path: '/:catchAll(.*)*'
+		component: () => import('@/views/exception/403')
 	},
 ]

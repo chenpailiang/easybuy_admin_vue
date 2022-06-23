@@ -28,23 +28,9 @@ import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import { listToTree } from '@/utils/util'
 
-// let menus = [
-// 	{
-// 		symbol: 'system',
-// 		name: '系统管理',
-// 		icon: 'Setting',
-// 		children: [
-// 			{ symbol: 'menu', name: '菜单管理', icon: null },
-// 			{ symbol: 'user', name: '用户管理', icon: null },
-// 		],
-// 	},
-// ]
 let route = useRoute()
 let currentKey = ref(route.path)
-watch(
-	_ => route,
-	v => (currentKey.value = v.path)
-)
+watch(route, v => (currentKey.value = v.path))
 
 let store = useStore()
 let menuList = computed(_ => store.getters['user/permissions'].menus)

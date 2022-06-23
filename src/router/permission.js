@@ -34,7 +34,7 @@ export const setupBeforeEach = router => {
 						.catch(err => {
 							ElNotification({
 								title: '权限错误',
-								message: err.msg || '请求用户信息失败，请重试',
+								message: err?.messsage || '请求用户信息失败，请重试',
 								type: 'error',
 							})
 							store.dispatch('user/LoginOut')

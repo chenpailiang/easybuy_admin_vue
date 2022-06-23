@@ -19,16 +19,21 @@ let login = _ => {
 	refForm.value.validate(async ok => {
 		if (ok) {
 			loading.value = true
-			await store.dispatch('user/Login', form)
-			loading.value = false
-			router.push('/')
-			setTimeout(_ => {
-				ElNotification({
-					title: '欢迎',
-					message: `${timeFix()}，欢迎回来`,
-					type: 'success',
+			let res = await store.dispatch('user/Login', form)
+			if (res.success) {
+				loading.value = false
+				router.push('/')
+				setTimeout(_ => {
+					ElNotification({
+						title: '欢迎',
+						message: `${timeFix()}，欢迎回来`,
+						type: 'success',
+					})
 				})
-			})
+			} else {
+				loading.value = false
+				ElNotification({ message: res.error, type: 'error' })
+			}
 		}
 	})
 }

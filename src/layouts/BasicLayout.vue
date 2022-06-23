@@ -5,6 +5,7 @@
 		</aside>
 		<main>
 			<Header />
+			<Nav />
 			<div class="content">
 				<el-scrollbar>
 					<suspense>
@@ -18,6 +19,7 @@
 
 <script setup>
 import Header from '@/components/layout/header/Header'
+import Nav from '@/components/layout/nav/Nav'
 import Aside from '@/components/layout/aside/Aside'
 </script>
 
