@@ -16,13 +16,13 @@ let route = useRoute()
 let router = useRouter()
 let views = computed(_ => store.state.tags.views)
 let isActive = v => route.path == v.path
-let removeTag = v => {
-	store.commit('tags/delViews', v)
-	isActive(v) && toLastView()
-}
 let toLastView = _ => {
 	let v = views.value.at(-1)
 	v && router.push(v.path)
+}
+let removeTag = v => {
+	store.commit('tags/delViews', v)
+	isActive(v) && toLastView()
 }
 
 watch(
