@@ -1,6 +1,7 @@
 import { createStore } from 'vuex'
 import user from './user'
 import permission from './async-router'
+import tags from './tags'
 
 export default createStore({
 	state: {},
@@ -9,5 +10,6 @@ export default createStore({
 	modules: {
 		user,
 		permission,
+		tags
 	},
 })

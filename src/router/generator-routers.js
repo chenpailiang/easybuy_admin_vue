@@ -152,6 +152,7 @@ const generatorRouter = menus => {
 			meta: {
 				menuId: v.id,
 				icon: v.icon,
+				title: v.name
 			},
 		}
 	})

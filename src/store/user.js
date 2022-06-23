@@ -4,6 +4,7 @@ import storage from 'store'
 import router from '@/router'
 import { createRouter } from 'vue-router'
 
+// 用户Info
 const user = {
 	namespaced: true,
 	state: {

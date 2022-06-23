@@ -3,7 +3,7 @@ import Icon from '@/components/common/Icon'
 import MenuInfo from './menu/MenuInfo'
 import FucInfo from './menu/FucInfo'
 import { ElMessage } from 'element-plus'
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import { useStore } from 'vuex'
 import { listToTree } from '@/utils/util'
 import { getMenuList, addMenu, editMenu, delMenu } from '@/api/menu'
@@ -68,17 +68,18 @@ let deleteMenu = async v => {
 let fucInfo = ref({})
 let fucDialog = ref(false)
 let isAdd = ref(false)
-let isEdit = ref(false)
+let mode = ref(false)
+let modeChange = _ => (mode.value = !mode.value)
 let showFuc = (v, bool = false) => {
 	fucDialog.value = true
 	if (!!bool) {
 		fucInfo.value = JSON.parse(JSON.stringify(v))
 		isAdd.value = false
-		isEdit.value = true
+		mode.value = true
 	} else {
 		fucInfo.value.menuName = v.name
 		isAdd.value = true
-		isEdit.value = false
+		mode.value = false
 	}
 }
 let funcClose = _ => {
@@ -124,10 +125,13 @@ let refresh = _ => location.reload()
 			</el-table-column>
 			<el-table-column label="操作" align="center">
 				<template #default="{ row: v }">
-					<el-button v-auth:addMenu @click="showMenu('+子菜单', v, 1)" type="primary" text size="small">
+					<el-button v-auth:addMenu @click="showMenu('+子菜单', v, 1)" type="primary" text
+						size="small">
 					</el-button>
-					<el-button v-auth:addFunc v-if="!isParentMenu(v.id)" @click="showFuc(v)" type="primary" text size="small"></el-button>
-					<el-button v-auth:editMenu @click="showMenu('编辑菜单', v)" type="primary" text size="small"></el-button>
+					<el-button v-auth:addFunc v-if="!isParentMenu(v.id)" @click="showFuc(v)" type="primary"
+						text size="small"></el-button>
+					<el-button v-auth:editMenu @click="showMenu('编辑菜单', v)" type="primary" text
+						size="small"></el-button>
 					<el-popconfirm title="确定删除该菜单?" confirmButtonText="是" cancelButtonText="否"
 						@confirm="deleteMenu(v)">
 						<template #reference>
@@ -150,10 +154,10 @@ let refresh = _ => location.reload()
 	</el-dialog>
 
 	<el-dialog v-model="fucDialog" :title="isAdd ? '新增功能' : '编辑功能'" width="25%" @close="funcClose">
-		<FucInfo :fucInfo="fucInfo" />
+		<FucInfo :fucInfo="fucInfo" :mode="mode" />
 		<template #footer>
 			<el-button v-if="!isAdd" @click="funcClose" type="danger">删除</el-button>
-			<el-button v-if="!isAdd" type="primary">修改</el-button>
+			<el-button v-if="!isAdd && mode" @click="modeChange" type="primary">修改</el-button>
 			<el-button v-else @click="sendFunc" type="primary">保存</el-button>
 		</template>
 	</el-dialog>
