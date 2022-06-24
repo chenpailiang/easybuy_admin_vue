@@ -25,14 +25,9 @@ let removeTag = v => {
 	store.commit('tags/delViews', v)
 	isActive(v) && toLastView()
 }
-watch(route, v => {
-	store.commit('tags/addViews', { title: v.meta.title, path: v.path })
-})
 
-function get() {
-	store.commit('tags/addViews', { title: route.meta.title, path: route.path })
-}
-onMounted(_ => get())
+watch(route, v => store.commit('tags/addViews', { title: v.meta.title, path: v.path }))
+onMounted(_ => store.commit('tags/addViews', { title: route.meta.title, path: route.path }))
 </script>
 
 <style lang="less" scoped>
@@ -57,9 +52,9 @@ onMounted(_ => get())
 		margin-right: 15px;
 	}
 	&.active {
-		background-color: rgba(36, 123, 255, 1);
+		background-color: #42b983;
 		color: #fff;
-		border-color: rgba(36, 123, 255, 1);
+		border-color: #42b983;
 		&::before {
 			content: '';
 			background: #fff;
@@ -69,6 +64,20 @@ onMounted(_ => get())
 			border-radius: 50%;
 			position: relative;
 			margin-right: 2px;
+		}
+	}
+	.el-icon-close {
+		width: 16px;
+		height: 16px;
+		vertical-align: 2px;
+		border-radius: 50%;
+		text-align: center;
+		-webkit-transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+		transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+		-webkit-transform-origin: 100% 50%;
+		transform-origin: 100% 50%;
+		&:hover {
+			background: var(--el-color-info-light-7);
 		}
 	}
 }
