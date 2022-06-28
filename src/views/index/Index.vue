@@ -1,9 +1,11 @@
 <template>
 	<div class="wrapper">
 		<div>
-			<div class="pan-thumb" style="background-image: url('https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif')"></div>
+			<div class="pan-thumb"
+				style="background-image: url('https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif')">
+			</div>
 			<div>
-        <span>易买超市管理系统</span>
+				<span>易买超市管理系统</span>
 			</div>
 		</div>
 		<div>
