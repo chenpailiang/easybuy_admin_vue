@@ -12,5 +12,5 @@ export function getInfo(data) {
 }
 // 获取菜单按钮权限
 export function getPermissionsList (data) {
-	return http.get('/api/menu', data, 120)
+	return http.get('/api/menu', data)
 }

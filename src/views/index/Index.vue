@@ -1,12 +1,9 @@
 <template>
-	<div class="wrapper">
-		<div>
-			<div class="pan-thumb"
-				style="background-image: url('https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif')">
-			</div>
-			<div>
-				<span>易买超市管理系统</span>
-			</div>
+	<div class="index-wrapper">
+		<div class="title">
+			<img class="pan-thumb" src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif"
+				alt="">
+			<h1 >易买超市管理系统</h1>
 		</div>
 		<div>
 			<img src="https://wpimg.wallstcn.com/0e03b7da-db9e-4819-ba10-9016ddfdaed3" class="emptyGif">
@@ -18,9 +15,23 @@
 </script>
 
 <style scoped>
-.wrapper {
+.index-wrapper {
 	background: rgb(227, 227, 227);
-	padding: 2.5rem 60rem 0;
+}
+.pan-thumb {
+	display: block;
+	width: 10rem;
+	height: 10rem;
+	border-radius: 15rem;
+}
+.title {
+	display: flex;
+	justify-content: flex-start;
+	margin-top: 1rem;
+}
+.text{
+	font-size: 18px;
+	font-weight: bold;
 }
 .emptyGif {
 	display: block;

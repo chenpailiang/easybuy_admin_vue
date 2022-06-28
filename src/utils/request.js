@@ -51,34 +51,34 @@ request.interceptors.response.use(
 	}
 )
 const http = {
-	get(url, params, aid) {
+	get(url, params) {
 		return new Promise((resolve, reject) => {
 			request
-				.get(url, { params, headers: { aid } })
+				.get(url, { params })
 				.then(res => resolve(res))
 				.catch(err => reject(err))
 		})
 	},
-	post(url, data, aid) {
+	post(url, data) {
 		return new Promise((resolve, reject) => {
 			request
-				.post(url, JSON.stringify(data), { headers: { aid } })
+				.post(url, JSON.stringify(data))
 				.then(res => resolve(res))
 				.catch(err => reject(err))
 		})
 	},
-	put(url, data, aid) {
+	put(url, data) {
 		return new Promise((resolve, reject) => {
 			request
-				.put(url, JSON.stringify(data), { headers: { aid } })
+				.put(url, JSON.stringify(data))
 				.then(res => resolve(res))
 				.catch(err => reject(err))
 		})
 	},
-	delete(url, params, aid) {
+	delete(url, params) {
 		return new Promise((resolve, reject) => {
 			request
-				.delete(url, { params, headers: { aid } })
+				.delete(url, { params })
 				.then(res => resolve(res))
 				.catch(err => reject(err))
 		})

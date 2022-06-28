@@ -32,7 +32,9 @@ onMounted(_ => store.commit('tags/addViews', { title: route.meta.title, path: ro
 
 <style lang="less" scoped>
 .tags-view-item {
-	display: inline-block;
+	display: flex;
+	align-items: center;
+	gap: 0 0.3rem;
 	position: relative;
 	cursor: pointer;
 	height: 26px;
