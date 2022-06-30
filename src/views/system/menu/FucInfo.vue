@@ -23,10 +23,10 @@ defineExpose({
 			<el-input v-model="fucInfo.symbol" :disabled="mode" placeholder="请输入编码" />
 		</el-form-item>
 		<el-form-item label="权限值">
-			<el-input v-model="fucInfo.sort" :disabled="mode" placeholder="请输入权限值" />
+			<el-input v-model.number="fucInfo.authId" :disabled="mode" placeholder="请输入权限值" />
 		</el-form-item>
 		<el-form-item label="说明">
-			<el-input v-model="fucInfo.info" :disabled="mode" placeholder="请输入说明" />
+			<el-input v-model="fucInfo.description" :disabled="mode" placeholder="请输入说明" />
 		</el-form-item>
 	</el-form>
 </template>

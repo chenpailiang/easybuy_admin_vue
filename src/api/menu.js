@@ -18,10 +18,10 @@ export function delMenu(data) {
 }
 // 新增功能
 export function addFunc(data) {
-	return http.post('/api/menu/funcs', data)
+	return http.post('/api/menu/func', data)
 }
 // 编辑功能
 export function editFunc(data) {
-	return http.put('/api/menu/funcs', data)
+	return http.put('/api/menu/func', data)
 }
 

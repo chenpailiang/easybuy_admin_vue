@@ -6,7 +6,7 @@ import { ElMessage } from 'element-plus'
 import { ref } from 'vue'
 import { useStore } from 'vuex'
 import { listToTree } from '@/utils/util'
-import { getMenuList, addMenu, editMenu, delMenu } from '@/api/menu'
+import { getMenuList, addMenu, editMenu, delMenu, addFunc, editFunc } from '@/api/menu'
 
 // 菜单按钮
 let menuList = ref([])
@@ -78,6 +78,7 @@ let showFuc = (v, bool = false) => {
 		mode.value = true
 	} else {
 		fucInfo.value.menuName = v.name
+		fucInfo.value.menuId= v.id
 		isAdd.value = true
 		mode.value = false
 	}
@@ -86,8 +87,15 @@ let funcClose = _ => {
 	fucInfo.value = {}
 	fucDialog.value = false
 }
-let sendFunc = _ => {
-	fucDialog.value = false
+let sendFunc = async _ => {
+	try {
+		isAdd.value ? await addFunc(fucInfo.value) : await editFunc(fucInfo.value)
+		ElMessage({ message: '操作成功', type: 'success' })
+		funcClose()
+		searchMenu()
+	} catch {
+		ElMessage({ message: '操作失败', type: 'error' })
+	}
 }
 
 // 权限操作
@@ -120,7 +128,7 @@ let refresh = _ => location.reload()
 				<template #default="{ row: v }">
 					<el-tooltip v-for="(k, i) in funcs.filter(s => s.menuId == v.id)" :key="i"
 						:content="k.description" placement="bottom">
-						<el-button @click="showFuc(Object.assign(k, { menuName: v.name }), 1)"
+						<el-button @click="showFuc(Object.assign(k, {menuId: v.menuId, menuName: v.name }), 1)"
 							type="primary" size="small" text>
 							{{ k.name }}
 						</el-button>
